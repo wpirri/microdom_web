@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<script src="js/ajax.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="reloj">&nbsp;</div>
+<div id="sombra-reloj">&nbsp;</div>
+<div id="clima-descripcion-sombra" class="clima">&nbsp;</div>
+<div id="clima-descripcion" class="clima">
+  <table><tr>
+  <td>
+    <div id="clima-descripcion-image" class="clima-descripcion-image">
+      &nbsp;
+    </div>
+  </td><td>
+    <div id="clima-descripcion-text" class="clima-descripcion-text">
+      &nbsp;
+    </div>
+  </td>
+  </tr></table>
+</div>
+<div id="clima-interior" class="clima">
+  <br />
+  <div class="clima-interior">
+    <img class="zone-icon" src="images/house.png" />
+  </div>
+</div>
+<div id="clima-exterior" class="clima">
+  <br />
+  <div class="clima-interior">
+    <img class="zone-icon" src="images/park.png" />
+  </div>
+</div>
+
+<script type="text/javascript">
+  var t = new Date();
+
+/* Clima */
+function updateExternStatus(msg) {
+	/*jsonData = JSON.parse(msg).response;*/
+  jsonData = msg.response;
+
+  if(jsonData) {
+    document.getElementById('clima-exterior').innerHTML = '<br />' +
+          '<div class="clima-interior"><img class="zone-icon" src="images/park.png" /></div>' +
+          '<div class="clima-interior">T '+ jsonData.temp +'</div>' + 
+          '<div class="clima-interior">Hr '+ jsonData.hum +'</div>' + 
+          '<div class="clima-interior"">Pa '+ jsonData.pres +'</div>';
+    document.getElementById('clima-descripcion-image').innerHTML = '&nbsp;&nbsp;<img class="weather-icon" src="images/' + jsonData.icon + '" />';
+    document.getElementById('clima-descripcion-text').innerHTML = '&nbsp;&nbsp;' + jsonData.text;
+  }
+}
+
+function updateLocalStatus(msg) {
+  var Temp = '0.00';
+  var Hum = '0.00';
+
+	/*jsonData = JSON.parse(msg).response;*/
+	jsonData = msg.response;
+
+	for (var i = 0; i < jsonData.length; i++) { 
+		//jsonData[i].Objeto
+		//jsonData[i].Port
+		//jsonData[i].Icono_Apagado
+		//jsonData[i].Icono_Encendido
+		//jsonData[i].Estado
+		//jsonData[i].Tipo
+		//jsonData[i].Perif_Data
+		if ( jsonData[i].Tipo == 6 ) {
+			if(jsonData[i].Objeto == 'Temp Int') {
+				Temp = jsonData[i].Perif_Data;
+			} else if(jsonData[i].Objeto == 'Hum Int') {
+				Hum = jsonData[i].Perif_Data;
+			}
+    }
+	}
+  document.getElementById('clima-interior').innerHTML = '<br />' +
+        '<div class="clima-interior"><img class="zone-icon" src="images/house.png" /></div>' +
+        '<div class="clima-interior">T '+ Temp +' °C</div>' + 
+        '<div class="clima-interior"">Hr '+ Hum +' %</div>';
+}
+
+/* Reloj */
+function twoDigits(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function setCurrentTime( ) {
+    var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var day_of_week = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    var yy = today.getFullYear();
+    var mm = today.getMonth();
+    var dd = today.getDate();
+    var dw = today.getDay();
+    // add a zero in front of numbers<10
+    h = twoDigits(h);
+    m = twoDigits(m);
+    s = twoDigits(s);
+    document.getElementById('reloj').innerHTML = 
+              '<div id="div-hora">' + h + '</div>' +
+              '<div id="div-minuto">' + m + '</div>' +
+              '<div id="div-dia-semana">' + day_of_week[dw] + '</div>' +
+              '<div id="div-dia">' + dd + ' de</div>' +
+              '<div id="div-mes">' + months[mm] + '</div>';
+    if(++timer_counter > 120)
+    {
+      timer_counter = 0;
+      // Get Local data
+      fetch("/cgi-bin/abmassign.cgi?funcion=status&Planta=1") // Consulta
+        .then(response => response.json())
+        .then(data => updateLocalStatus(data))
+        .catch(error => {
+            document.getElementById("clima-interior").innerHTML =
+                "<p>Error al obtener datos locales: " + error + "</p>";
+        });
+
+      fetch("/data/weather.json") // Consulta
+        .then(response => response.json())
+        .then(data => updateExternStatus(data))
+        .catch(error => {
+            document.getElementById("clima-exterior").innerHTML =
+                "<p>Error al obtener datos externos: " + error + "</p>";
+        });
+    }
+    setTimeout("setCurrentTime()", 500);
+  }
+
+var timer_counter = 118;
+
+setCurrentTime();
+
+/* On Click de la página */
+window.onclick = function() {window.location.replace('planta.html');}
+
+/* Reload para actualizaciones */
+setTimeout("window.location.replace('/');", 36000000);
+
+</script>
+</body>
+</html>

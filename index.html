@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head><title></title></head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const esMovil = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(
+      navigator.userAgent
+    );
+
+    if (esMovil) {
+      window.location.replace("m/");
+    } else {
+      window.location.replace("home.html");
+    }
+  });
+</script>
+
+</body>
+</html>

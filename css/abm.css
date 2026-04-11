@@ -1,0 +1,100 @@
+/* == Pantallas de ABM == */
+.abm-div {
+	position: absolute; 
+	left: 255px; 
+	top: 10px; 
+	border: 1px dotted #fff;
+	border-radius: 10px 0px 0px 0px;
+	padding: 2px;
+	color: white;
+	background: black;
+	overflow: auto;
+	overflow-x: hidden;
+	width: 525px;
+	height: 415px;
+	}
+
+  .abm-list-table {
+	background: rgb(145, 145, 145);
+	color: rgb(0, 0, 0);
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+	left: 255px; 
+	top: 10px; 
+  }
+  
+  .abm-list-table td {
+	border: 1px solid rgb(85, 85, 85);
+	text-align: left;
+	padding: 8px;
+  }
+  
+  .abm-list-table tr:nth-child(even){background-color: #686868;}
+  
+  .abm-list-table tr:hover {background-color: rgb(33, 130, 38);}
+  
+  .abm-list-table th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: center;
+	background-color: rgb(0, 0, 64);
+	color: white;
+  }
+
+ .abm-table th {
+	text-align: left;
+	color: white;
+  }
+
+ .abm-table-title {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+	font-size: 22px;
+	font-weight: bold;
+	background-color: rgb(0, 0, 64);
+	color: orange;	  
+	}
+
+.abm-edit-input-text {
+	background: darkgrey;
+}
+
+.abm-result-message {
+	position: relative;
+	color: white;
+	background: black;
+	text-align: center;
+	}
+
+.abm-lateral-list-div {
+	position: absolute; 
+	left: 50px; 
+	top: 110px; 
+	border: 1px dotted #fff;
+	border-radius: 10px 0px 0px 0px;
+	padding: 2px;
+	color: white;
+	background: black;
+	overflow: auto;
+	overflow-x: hidden;
+	width: 175px;
+	height: 315px;
+	}
+	
+.abm-panel-table {
+	background: rgb(50, 50, 50);
+	color: rgb(255, 255, 255);
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+	left: 255px; 
+	top: 10px; 
+	}
+	
+.abm-panel-table td {
+	border: 3px solid rgb(0, 0, 0);
+	text-align: left;
+	padding: 3px;
+	}
