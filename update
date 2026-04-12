@@ -1,5 +1,10 @@
 #!/bin/sh
 
+sudo mkdir -p /var/lib/microdom/html/images
+sudo mkdir -p /var/lib/microdom/html/css
+sudo mkdir -p /var/lib/microdom/html/js
+sudo mkdir -p /var/lib/microdom/html/data
+
 sudo cp -uva *.html /var/lib/microdom/html/
 sudo cp -uva images/* /var/lib/microdom/html/images/
 sudo cp -uva css/* /var/lib/microdom/html/css/

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SYSHOME V 4.0 - Plano de Planta</title>
 <link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
-<script src="js/ajax.js" type="text/javascript"></script>
+<!--<script src="js/" type="text/javascript"></script>-->
 </head>
 
 <body onload="OnLoad();">
@@ -28,10 +28,7 @@
 </div>
 
 <div class="home-group" id="home-div">
-<!--	
-include("obj_draw.php");
--->
-	<img class="home-image" id="plano1" src="images/home.png" />
+    <div id="planta">&nbsp;</div>
 </div>
 
 <script type="text/javascript" >
@@ -49,11 +46,9 @@ function insertarEstilos(obj_list) {
     obj_list.forEach(item => {
         // Limpieza del nombre del objeto
         let Objeto = item.Objeto.replace(/ /g, "").replace(/\./g, "");
-
         // Coordenadas
         let Cord_x = item.Cord_x;
         let Cord_y = item.Cord_y;
-
         // Construcción del bloque CSS
         css += "#id-" + Objeto + " {z-index: 20;border: 0px;cursor: pointer;position: absolute;left: " + Cord_x + "px; top: " + Cord_y + "px;}\n";
     });
@@ -66,102 +61,61 @@ function insertarEstilos(obj_list) {
 
 function renderObjetos(obj_list, edit = 0) {
 
-    // Contenedor donde se insertarán los elementos
-    const container = document.getElementById("planta") || document.body;
+    objetos_planta = "";
 
-    obj_list.forEach(item => {
+    try {    
+        obj_list.forEach(item => {
+            nombre = item.Objeto.replace(/ /g, "").replace(/\./g, "");
+            accion = "";
+            src = "";
 
-        // -----------------------------
-        // Limpieza del nombre del objeto
-        // -----------------------------
-        let Objeto = item.Objeto.replace(/ /g, "").replace(/\./g, "");
-
-        // -----------------------------
-        // Icono según estado
-        // -----------------------------
-        let src = "";
-        if (edit === 1 || item.Estado === 1) {
-            src = "images/" + item.Icono_Encendido;
-        } else {
-            src = "images/" + item.Icono_Apagado;
-        }
-
-        // -----------------------------
-        // Acción de click
-        // -----------------------------
-        let onclick = null;
-
-        if (edit === 1) {
-            onclick = () => window.location.replace('edit_assign.php?Id=' + item.Id);
-        }
-        else if (item.Tipo === 0) {
-            onclick = () => fetch('/cgi-bin/abmassign.cgi?funcion=switch&Objeto=' + Objeto);
-        }
-        else if (item.Tipo === 5) {
-            onclick = () => fetch('/cgi-bin/abmassign.cgi?funcion=pulse&Objeto=' + Objeto + '&Segundos=' + item.Analog_Mult_Div_Valor);
-        }
-
-        // -----------------------------
-        // Crear el elemento según el tipo
-        // -----------------------------
-        let el;
-
-        if (item.Tipo === 2) {
-            // Display numérico
-            el = document.createElement("div");
-            el.className = "home-display";
-            el.innerHTML = "&nbsp;9999&nbsp;";
-        }
-        else if (item.Tipo === 6) {
-            // Display de temperatura / humedad / genérico
-            el = document.createElement("div");
-            el.className = "home-display";
-
-            if (item.Port.startsWith("T")) {
-                el.innerHTML = "&nbsp;T 00.0 °C&nbsp;";
+            // Imagen
+            if (edit === 1 || item.Estado === 1) {
+                src = "images/" + item.Icono_Encendido;
+            } else {
+                src = "images/" + item.Icono_Apagado;
             }
-            else if (item.Port.startsWith("H")) {
-                el.innerHTML = "&nbsp;Hr 00.0 %&nbsp;";
+            // Acción al hacer click
+            if (edit == 1) {
+                accion = "window.location.replace('edit_assign.html?Id=" + item.Id + "');";
             }
-            else {
-                el.innerHTML = "&nbsp;" + item.Port + "&nbsp;";
+            else if (item.Tipo == 0) {
+                accion = "fetch('/cgi-bin/abmassign.cgi?funcion=switch&Objeto=" + item.Objeto + "');";
             }
-        }
-        else {
-            // Imagen genérica
-            el = document.createElement("img");
-            el.className = "home-image";
-            el.src = src;
-        }
+            else if (item.Tipo == 5) {
+                accion = "fetch('/cgi-bin/abmassign.cgi?funcion=pulse&Objeto=" + item.Objeto + "&Segundos=" + item.Analog_Mult_Div_Valor + "');";
+            }
+            // Armo el tag de imagen
+            img = "<img id=\"id-" + nombre + "\" class=\"home-image\" src=\"" + src + "\" onclick=\"" + accion + "\"/>\n";
+            // Voy apilando los objetos
+            objetos_planta += img;
+        });
+        objetos_planta += "<img class=\"home-image\" id=\"plano\" src=\"images/home.png\" />\r";
+        document.getElementById("planta").innerHTML = objetos_planta;
 
-        // ID del elemento
-        el.id = "id-" + Objeto;
+        // Me traigo el plano y las coordenadas de scroll
+        fetch('/cgi-bin/abmsys.cgi?funcion=get_current') // Consulta
+            .then(response => response.json())
+            .then(data => loadHomePicture(data))
+            .catch(error => { document.getElementById("clima-exterior").innerHTML =
+                                "<p>Error al obtener datos externos: " + error + "</p>"; });
 
-        // Asignar onclick si corresponde
-        if (onclick) el.addEventListener("click", onclick);
-
-        // Insertar en el contenedor
-        container.appendChild(el);
-    });
+	} catch (e) { return; }
 }
 
-function updateHomePicture(msg) {
+function loadHomePicture(msg) {
 	try {
 		jsonData = msg.response;
 		if(jsonData) {
 			var bg_data = jsonData.Planta1.split(';');
-			document.getElementById('plano1').src = 'images/' + bg_data[0];
+			document.getElementById('plano').src = 'images/' + bg_data[0];
 			if(bg_data[1] != null && bg_data[2] != null)
 			{
 				setTimeout("ScrollMap(" + bg_data[1] + "," + bg_data[2] + ");", 1000);
 			}
 		}
-		else {
-			fetch("/cgi-bin/abmsys.cgi?funcion=get_current") // Consulta
-				.then(response => response.json())
-				.then(data => updateHomePicture(data))
-				.catch(error => { console.error('Error al obtener los estilos:', error); });
-		}
+        // inicio el refresco de estado de los objetos
+        refreshHomeStatus();
 	} catch (e) { return; }
 }
 
@@ -213,26 +167,25 @@ function updateHomeStatus(msg) {
 	} catch (e) { return; }
 }
 
+function refreshHomeStatus() {
+    fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
+        .then(response => response.json())
+        .then(data => updateHomeStatus(data))
+        .catch(error => { });
+    window.setTimeout("refreshHomeStatus();", 5000); // Refrescar cada 5 segundos
+}
+
 function OnLoad( ) {
-	fetch("/cgi-bin/abmassign.cgi?funcion=info&Planta=" + PLANTA) // Consulta
+	fetch('/cgi-bin/abmassign.cgi?funcion=info&Planta=' + PLANTA) // Consulta
 		.then(response => response.json())
 		.then(data => insertarEstilos(data.response))
 		.catch(error => { console.error('Error al obtener los estilos:', error); });
 
-	fetch("/cgi-bin/abmassign.cgi?funcion=status&Planta=" + PLANTA) // Consulta
+	fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
 		.then(response => response.json())
 		.then(data => renderObjetos(data.response))
-		.catch(error => { console.error('Error al obtener los estilos:', error); });
-
-	fetch("/cgi-bin/abmsys.cgi?funcion=get_current") // Consulta
-		.then(response => response.json())
-		.then(data => updateHomePicture(data))
-		.catch(error => {
-			document.getElementById("clima-exterior").innerHTML =
-				"<p>Error al obtener datos externos: " + error + "</p>";
-		});
-
-	newAJAXCommand('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA , updateHomeStatus, true);
+		.catch(error => { console.error('Error al obtener los objetos:', error); });
+       
 }
 
 
