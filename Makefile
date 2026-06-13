@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-include ../../configure.mk
+include configure.mk
 
 all: none
 

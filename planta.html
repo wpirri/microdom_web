@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SYSHOME V 4.0 - Plano de Planta</title>
 <link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
-<!--<script src="js/" type="text/javascript"></script>-->
+<script src="js/microdom.js" type="text/javascript"></script>
 </head>
 
 <body onload="OnLoad();">
@@ -15,7 +15,7 @@
 	<img id="back-icon" class="icon-btn" src="images/back.png">&nbsp;Volver
 </div>
 
-<div class="normal-btn" id="btn-planta-select1" onclick="window.location.replace('seguridad_menu.php');">
+<div class="normal-btn" id="btn-planta-select1" onclick="window.location.replace('seguridad_menu.html');">
 	<img id="seg-icon" class="icon-btn" src="images/lock1.png">&nbsp;Seguridad
 </div>
 
@@ -140,7 +140,7 @@ function updateHomeStatus(msg) {
 			//jsonData[i].Tipo
 			//jsonData[i].Perif_Data
 			var Objeto = jsonData[i].Objeto;
-			// Sustituciones (Mantener: obj_style.php objdraw.php planta.php)
+			// Sustituciones (Mantener: obj_style.html objdraw.html planta.html)
 			var objId = Objeto.replace(/ /g, '').replace(/\./g, '');
 			if ( jsonData[i].Tipo == 2 ) {
 				document.getElementById('id-'+objId).innerHTML = '&nbsp' + jsonData[i].Estado + '&nbsp';
@@ -192,6 +192,12 @@ function OnLoad( ) {
 </script>
 
 </body>
+
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
 </html>
 
 

@@ -373,6 +373,55 @@ function getAbmTableHedaer(json_list) {
 	return headers; 
 }
 
+function ArmarTabla(data, dst_div, title) {
+	var dst = document.getElementById(dst_div);
+	if (!dst) {
+		return;
+	}
+
+	if (!data || typeof data !== 'object') {
+		dst.innerHTML = '<p>Error: datos inválidos.</p>';
+		return;
+	}
+
+	if (data.error !== 0) {
+		dst.innerHTML = '<p>' + (data.message ? data.message : 'Error desconocido') + '</p>';
+		return;
+	}
+
+	var response = data.response;
+	if (!response || typeof response !== 'object') {
+		dst.innerHTML = '<p>Error: respuesta inválida.</p>';
+		return;
+	}
+
+	var rows = Array.isArray(response) ? response : [response];
+	var headers = getAbmTableHedaer(rows);
+
+	var output = '<div class="abm-table-title">' + title + '</div>\n';
+	output += '<table class="abm-list-table">\n';
+	output += '<tr>';
+	for (var i = 0; i < headers.length; i++) {
+		output += '<th>' + headers[i] + '</th>';
+	}
+	output += '</tr>\n';
+
+	for (var r = 0; r < rows.length; r++) {
+		output += '<tr>';
+		for (var c = 0; c < headers.length; c++) {
+			var val = rows[r][headers[c]];
+			if (val === null || val === undefined) {
+				val = '&nbsp;';
+			}
+			output += '<td>' + val + '</td>';
+		}
+		output += '</tr>\n';
+	}
+
+	output += '</table>\n';
+	dst.innerHTML = output;
+}
+
 /* ==== ABM Generico =========================================================== */
 
 function fillAbmList(json_list, dst_div, title, index_label, edit_link, delete_link) { 
