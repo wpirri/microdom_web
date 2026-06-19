@@ -1,13 +1,22 @@
-<?php
-$TITLE='Dispositivo Nuevo'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Dispositivo Nuevo</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body  onload="OnLoad();">
 
 <form id="add_form" name="add_form" method="post">
 
-<div id='hw_add_back_btn' class='back-btn' onclick="window.location.replace('hw_list.php');" >
+<div id='hw_add_back_btn' class='back-btn' onclick="window.location.replace('hw_list.html');" >
 	<img id='hw_add_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Cancelar
 </div>
 
@@ -18,58 +27,83 @@ include('head-abm.php');
 <div id='hw_add_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    var listaNewHw = [];
+    //  cgi-bin/abmhw.cgi?funcion=new_hw' -> LoadNewHWList
 
-    function fillHWForm(json_list, dst_div, title) {
-        // Getting the all column names 
-        var headers = getAbmTableHedaer(json_list);
-        var output = '<p class=abm-table-title>' + title + '</p>\n<table class=abm-table id=abm_edit_table>\n';
-        var i = 0;
+    function ArmarTabla(data, dst_div, title) {
+        var dst = document.getElementById(dst_div);
+        if (!dst) return;
 
-        // Header
-        for (i = 0; i < headers.length; i++) { 
+        if (!data || typeof data !== 'object') {
+            dst.innerHTML = '<p>Error: datos inválidos.</p>';
+            return;
+        }
+
+        if (data.error !== 0) {
+            dst.innerHTML = '<p>' + (data.message ? data.message : 'Error desconocido') + '</p>';
+            return;
+        }
+
+        var response = data.response;
+        if (!response || typeof response !== 'object') {
+            dst.innerHTML = '<p>Error: respuesta inválida.</p>';
+            return;
+        }
+
+        var obj = Array.isArray(response) ? (response.length ? response[0] : {}) : response;
+
+        var headers = [];
+        for (var k in obj) {
+            if (headers.indexOf(k) === -1) headers.push(k);
+        }
+
+        var output = '<p class=abm-table-title>' + title + '</p>\n';
+        output += '<table class=abm-table id=abm_edit_table>\n';
+
+        for (var i = 0; i < headers.length; i++) {
+            var h = headers[i];
+            var val = obj[h];
+            if (val === null || val === undefined || val === 'NULL') val = '';
+
             output += '<tr>';
-            output += '<th>';
-            if(headers[i] == 'Id') { output += '&nbsp;'; }
-            else { output += headers[i]; }
-            output += '</th>';
+            output += '<th>' + (h === 'Id' ? '&nbsp;' : h) + '</th>';
             output += '<td>';
-            if(headers[i] == 'Id') {
-                output += '<input type="hidden" id="' + headers[i] + '" name="' + headers[i] + '" class="abm-edit-input-text" />';
-            } else if(headers[i] == 'MAC' && listaNewHw.length > 0) {
-                output += fillSimpleList('MAC', listaNewHw);
-            } else if(headers[i] == 'Tipo') {
-                output += fillSimpleList('Tipo', TipoHW);
-            } else {
-                output += '<input type="text" id="' + headers[i] + '" name="' + headers[i] + '" class="abm-edit-input-text" />';
-            }
+            output += '<input type="' + (h === 'Id' ? 'hidden' : 'text') + '" Id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
             output += '</td>';
             output += '</tr>\n';
         }
+
         output += '</table>\n';
-        document.getElementById(dst_div).innerHTML = output;
+        dst.innerHTML = output;
     }
 
     function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmhw.cgi?funcion=new_hw', LoadNewHWList, false);
+        fetch("/cgi-bin/abmhw.cgi?funcion=get&Id=0") // Consulta
+        .then(response => response.json())
+        .then(data => ArmarTabla(data, 'hw_add_div', 'Dispositivo Nuevo'))
+        .catch(error => {
+            document.getElementById("hw_add_div").innerHTML =
+                "<p>Error al obtener datos: " + error + "</p>";
+        });
     }
-
-    function LoadNewHWList(msg) {
-        try {
-            listaNewHw = JSON.parse(msg).response;
-        } catch (error) {
-            listaNewHw = [];
-         }
-        newAJAXCommand('/cgi-bin/abmhw.cgi?funcion=get&Id=0', LoadData, false);
-    }
-
-    function LoadData(msg) {
-        fillHWForm(JSON.parse(msg).response, 'hw_add_div', '<?php echo $TITLE; ?>');
-    }
-
+    
     function SaveData() {
-        newAJAXCommand('/cgi-bin/abmhw.cgi?funcion=add', null, false, collectFormData('add_form'));
-        window.location.replace('hw_list.php');
+        var kvpairs = [];
+        var form = document.getElementById('add_form');
+        if (!form) return;
+
+        for ( var i = 0; i < form.elements.length; i++ ) {
+            var e = form.elements[i];
+            if (!e.name) continue;
+            kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
+        }
+
+        fetch("/cgi-bin/abmhw.cgi?funcion=add", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: kvpairs.join('&')
+        })
+        .catch(function(){} )
+        .finally(function(){ window.location.replace('hw_list.html'); });
     }
 </script>
 
@@ -77,6 +111,9 @@ include('head-abm.php');
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>
