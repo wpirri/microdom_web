@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <html>
 <head>
-<title>SYSHOME V 4.0 - Dispositivos</title>
+<title>SYSHOME V 4.0 - Eventos</title>
 <meta name="author" content="Walter Pirri" >
 <meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
 <meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
@@ -56,7 +56,7 @@
         fields.forEach(field => {
             html += "<th>" + field + "</th>";
         });
-        html += "<th>Acciones</th></tr>";
+        html += "<th>Modificar</th><th>Eliminar</th></tr>";
 
         rows.forEach(item => {
             if(item[idField] != 0) {

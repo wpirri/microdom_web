@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <html>
 <head>
-<title>SYSHOME V 4.0 - Dispositivo Nuevo</title>
+<title>SYSHOME V 4.0 - Modificar Objeto</title>
 <meta name="author" content="Walter Pirri" >
 <meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
 <meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
@@ -79,7 +79,7 @@
         const id = params.get('Id'); // recupera el valor de ?Id=123
         fetch("/cgi-bin/abmassign.cgi?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
-        .then(data => ArmarTabla(data, 'ass_edit_div', 'Editar Asignación'))
+        .then(data => ArmarTabla(data, 'ass_edit_div', 'Modificar Objeto'))
         .catch(error => {
             document.getElementById("ass_edit_div").innerHTML =
                 "<p>Error al obtener datos: " + error + "</p>";

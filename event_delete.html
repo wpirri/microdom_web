@@ -1,7 +1,16 @@
-<?php
-$TITLE='Borrar Evento'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Borrar Evento</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload="OnLoad();">
 
@@ -16,22 +25,71 @@ include('head-abm.php');
 <div id='event_delete_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    function LoadData(msg) {
-        fillAbmDelete(JSON.parse(msg).response, 'event_delete_div', '<?php echo $TITLE; ?>');
-    }
+    function ArmarTabla(data, dst_div, title) {
+        var dst = document.getElementById(dst_div);
+        if (!dst) return;
 
-    function LoadAssData(msg) {
-        loadAssTable(JSON.parse(msg).response);
-        newAJAXCommand('/cgi-bin/abmev.cgi?funcion=get&Id=<?php echo $_GET['Id']; ?>', LoadData, false);
-    }
+        if (!data || typeof data !== 'object') {
+            dst.innerHTML = '<p>Error: datos inválidos.</p>';
+            return;
+        }
 
-    function SaveData() {
-        newAJAXCommand('/cgi-bin/abmev.cgi?funcion=delete&Id=<?php echo $_GET['Id']; ?>', null, false);
-        window.location.replace('event_list.php');
+        if (data.error !== 0) {
+            dst.innerHTML = '<p>' + (data.message ? data.message : 'Error desconocido') + '</p>';
+            return;
+        }
+
+        var response = data.response;
+        if (!response || typeof response !== 'object') {
+            dst.innerHTML = '<p>Error: respuesta inválida.</p>';
+            return;
+        }
+
+        var obj = Array.isArray(response) ? (response.length ? response[0] : {}) : response;
+
+        var headers = [];
+        for (var k in obj) {
+            if (headers.indexOf(k) === -1) headers.push(k);
+        }
+
+        var output = '<p class=abm-table-title>' + title + '</p>\n';
+        output += '<table class=abm-table id=abm_edit_table>\n';
+
+        for (var i = 0; i < headers.length; i++) {
+            var h = headers[i];
+            var val = obj[h];
+            if (val === null || val === undefined || val === 'NULL') val = '';
+
+            output += '<tr>';
+            output += '<th>' + (h === 'Id' ? '&nbsp;' : h) + '</th>';
+            output += '<td>';
+            output += '<input type="' + (h === 'Id' ? 'hidden' : 'text') + '" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" readonly />';
+            output += '</td>';
+            output += '</tr>\n';
+        }
+
+        output += '</table>\n';
+        dst.innerHTML = output;
     }
 
     function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmassign.cgi', LoadAssData, false);
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('Id'); // recupera el valor de ?Id=123
+        fetch("/cgi-bin/abmevent.cgi?funcion=get&Id=" + id) // Consulta
+        .then(response => response.json())
+        .then(data => ArmarTabla(data, 'event_delete_div', 'Borrar Objeto'))
+        .catch(error => {
+            document.getElementById("event_delete_div").innerHTML =
+                "<p>Error al obtener datos: " + error + "</p>";
+        });
+    }
+    
+    function SaveData() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('Id'); // recupera el valor de ?Id=123
+        fetch("/cgi-bin/abmevent.cgi?funcion=delete&Id=" + id) // Consulta
+        .catch(function(){} )
+        .finally(function(){ window.location.replace('event_list.html'); });
     }
 </script>
 
@@ -39,6 +97,9 @@ include('head-abm.php');
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>
