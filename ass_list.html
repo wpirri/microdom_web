@@ -1,87 +1,98 @@
-<?php
-$TITLE='Objetos'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Dispositivos</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload='OnLoad();'>
 
-<div id='ass_list_back_btn' class='back-btn' onclick="window.location.replace('<?php echo $CONFIG_MENU?>');" >
+<div id='ass_list_back_btn' class='back-btn' onclick="window.location.replace('config_menu.html');" >
 	<img id='ass_list_back_icon' class='icon-btn' src='images/back.png'>&nbsp;Volver
 </div>
 
-<div id='ass_list_add_btn' class='add-btn' onclick="window.location.replace('ass_add.php');" >
+<div id='ass_list_add_btn' class='add-btn' onclick="window.location.replace('ass_add.html');" >
 	<img id='ass_list_add__icon' class='icon-btn' src='images/add.png'>&nbsp;Nuevo
 </div>
 
 <div id='ass_list_table_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    function fillAssList(json_list, dst_div, title, index_label, edit_link, delete_link) { 
-        // Getting the all column names 
-        var headers = getAbmTableHedaer(json_list);
-        var output = '<div class=abm-table-title>&nbsp;' + title + '</div>\n<table class=abm-list-table>\n';
-        var i = 0;
-        var j = 0;
-        var index_value = '';
+    // /cgi-bin/abmassign.cgi
 
-        // Header
-        output += '<tr>';
-        for (i = 0; i < headers.length; i++) { 
-            if(headers[i] != 'Id') {
-                output += '<th>';
-                output += headers[i];
-                output += '</th>';
-            }
+    function ArmarLista(data, divId, title, idField, editPage, deletePage) {
+        if(data.error != 0) {
+            document.getElementById(divId).innerHTML =
+                '<p>Error al obtener el listado de Objetos: ' + data.message + '</p>';
+            return;
         }
-        // Agrego las columnas de edición y borrado
-        output += '<th>Editar</th>';
-        output += '<th>Borrar</th>';
-        output += '</tr>\n';
-        // Datos - Salteo el primero de la lista
-        for (i = 0; i < json_list.length; i++) {
-            if(json_list[i]['Id'] > 0) {
-                output += '<tr>';
-                index_value = '';
-                for (j = 0; j < headers.length; j++) { 
-                    var val = json_list[i][headers[j]]; 
-                    if(headers[j] == 'Id') {
-                        index_value = val;
-                    } else {
-                        // If there is any key, which is matching 
-                        // with the column name 
-                        if (val == null) val = "&nbsp;";   
-                        output += '<td>';
-                        if(headers[j] == 'Tipo') {
-                            output += TipoAss[val].label;
-                        } else {
-                            output += val;
-                        }
-                        output += '</td>';
-                    }
-                } 
-                // Agrego los links de edición y borrado
-                val = '<td><a href="' + edit_link + '?' + index_label + '=' + index_value + '"><img src="images/edit.png"></a></td>' 
-                output += val;
-                val = '<td><a href="' + delete_link + '?' + index_label + '=' + index_value + '"><img src="images/delete.png"></a></td>' 
-                output += val;
-                output += '</tr>\n';
-            }
-        }
-        output += '</table>\n';
-        document.getElementById(dst_div).innerHTML = output;
-    } 
 
-    function LoadData(msg) {
-        fillAssList(JSON.parse(msg).response, 'ass_list_table_div', '<?php echo $TITLE; ?>', 'Id', 'ass_edit.php', 'ass_delete.php');
+        let html = '<div class=abm-table-title>&nbsp;' + title + '</div>\n';
+        const rows = Array.isArray(data.response) ? data.response : [];
+        if (rows.length === 0) {
+            html += '<p>No hay datos disponibles.</p>';
+            document.getElementById(divId).innerHTML = html;
+            return;
+        }
+
+        const fieldSet = new Set();
+        const fields = [];
+        rows.forEach(item => {
+            Object.keys(item).forEach(field => {
+                if (field !== idField && !fieldSet.has(field)) {
+                    fieldSet.add(field);
+                    fields.push(field);
+                }
+            });
+        });
+
+        //html += "<table class='abm-table'><tr><th>ID</th>";
+        html += "<table class='abm-list-table'><tr>";
+        fields.forEach(field => {
+            html += "<th>" + field + "</th>";
+        });
+        html += "<th>Modificar</th><th>Eliminar</th></tr>";
+
+        rows.forEach(item => {
+            if(item[idField] != 0) {
+                html += "<tr>";
+                //html += "<td>" + (item[idField] ?? "") + "</td>";
+                fields.forEach(field => {
+                    html += "<td>" + (item[field] ?? "") + "</td>";
+                });
+                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
+                html += "</tr>";
+            }
+        });
+
+        html += "</table>";
+        document.getElementById(divId).innerHTML = html;
     }
 
     function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmassign.cgi', LoadData, false);
+        fetch("/cgi-bin/abmassign.cgi") // Consulta
+        .then(response => response.json())
+        .then(data => ArmarLista(data, 'ass_list_table_div', 'Objetos', 'Id', 'ass_edit.html', 'ass_delete.html'))
+        .catch(error => {
+            document.getElementById("ass_list_table_div").innerHTML =
+                '<p>Error al obtener el listado de Objetos: ' + error + '</p>';
+        });
     }
 </script>
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>

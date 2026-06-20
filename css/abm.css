@@ -29,7 +29,7 @@
 	text-align: left;
 	padding: 8px;
   }
-  
+
   .abm-list-table tr:nth-child(even){background-color: #686868;}
   
   .abm-list-table tr:hover {background-color: rgb(33, 130, 38);}
