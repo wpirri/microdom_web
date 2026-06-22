@@ -1,40 +1,50 @@
-<?php
-$TITLE='Automatizaciones'; 
-include("head.php");
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Automatizaciones</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body>
 
-<div class="back-btn" id="back-from-config" onclick="window.location.replace('<?php echo $CONFIG_MENU?>');">
+<div class="back-btn" id="back-from-config" onclick="window.location.replace('config_menu.html');">
 	<img id="back-icon" class="icon-btn" src="images/back.png">&nbsp;Volver
 </div>
 
 
 
-<div class="normal-btn" id="btn-config-riego" onclick="window.location.replace('riego_list.php');">
+<div class="normal-btn" id="btn-config-riego" onclick="window.location.replace('riego_list.html');">
 	<img id="riego-icon" class="icon-btn" src="images/gota.png">&nbsp;Riego
 </div>
 
-<!--<div class="normal-btn" id="btn-config-calefaccion" onclick="window.location.replace('calefaccion_list.php');">
+<!--<div class="normal-btn" id="btn-config-calefaccion" onclick="window.location.replace('calefaccion_list.html');">
 	<img id="calefaccion-icon" class="icon-btn" src="images/calef1.png">&nbsp;Calefacci&oacute;n
 </div>-->
 
-<!--<div class="normal-btn" id="btn-config-aire" onclick="window.location.replace('aire_list.php');">
+<!--<div class="normal-btn" id="btn-config-aire" onclick="window.location.replace('aire_list.html');">
 	<img id="aire-icon" class="icon-btn" src="images/termost.png">&nbsp;Aire
 </div>-->
 
 
-<div class="normal-btn" id="btn-config-task" onclick="window.location.replace('task_list.php');">
+<div class="normal-btn" id="btn-config-task" onclick="window.location.replace('task_list.html');">
 	<img id="task-icon" class="icon-btn" src="images/cron.png">&nbsp;Tareas
 </div>
 
-<div class="normal-btn" id="btn-config-analog" onclick="window.location.replace('analog_list.php');">
+<div class="normal-btn" id="btn-config-analog" onclick="window.location.replace('analog_list.html');">
 	<img id="analog-icon" class="icon-btn" src="images/lamp1.png">&nbsp;Iluminaci&oacute;n
 </div>
 
 </body>
-<?php
-include("foot.php");
-?>
 
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
 
+</html>

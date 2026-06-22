@@ -46,7 +46,7 @@
     }
 
     function onDblClick(obj_id, js_id) {
-        window.location.replace('edit_assign.php?Id=' + obj_id);
+        window.location.replace('edit_assign.html?Id=' + obj_id);
     }
 
     function onMouseMove(obj_id, js_id) {
@@ -75,7 +75,7 @@
         $Icono_Apagado = $obj_list[$i]['Icono_Apagado'];
         $Icono_Encendido = $obj_list[$i]['Icono_Encendido'];
 
-        // Sustituciones (Mantener: obj_style.php objdraw.php planta.php)
+        // Sustituciones (Mantener: obj_style.html objdraw.html planta.html)
         $Objeto = $obj_list[$i]['Objeto'];
         $Objeto = str_replace(" ", "", $Objeto);
         $Objeto = str_replace(".", "", $Objeto);

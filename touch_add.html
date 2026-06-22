@@ -1,13 +1,22 @@
-<?php
-$TITLE='Tactil Nuevo'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Tactil Nuevo</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body  onload="OnLoad();">
 
 <form id="add_form" name="add_form" method="post">
 
-<div id='touch_add_back_btn' class='back-btn' onclick="window.location.replace('touch_list.php');" >
+<div id='touch_add_back_btn' class='back-btn' onclick="window.location.replace('touch_list.html');" >
 	<img id='touch_add_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Cancelar
 </div>
 
@@ -18,30 +27,17 @@ include('head-abm.php');
 <div id='touch_add_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    function LoadData(msg) {
-        fillAbmForm(JSON.parse(msg).response, 'touch_add_div', '<?php echo $TITLE; ?>');
-    }
 
-    function LoadHWData(msg) {
-        loadHWTable(JSON.parse(msg).response);
-        newAJAXCommand('/cgi-bin/abmtouch.cgi?funcion=get&Id=0', LoadData, false);
-    }
 
-    function SaveData() {
-        newAJAXCommand('/cgi-bin/abmtouch.cgi?funcion=add', null, false, collectFormData('add_form'));
-
-        window.location.replace('touch_list.php');
-    }
-
-    function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmhw.cgi', LoadHWData, false);
-    }
 </script>
 
 </form>
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>

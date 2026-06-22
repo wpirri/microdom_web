@@ -1,6 +1,6 @@
 <?php
 $TITLE='Particiones'; 
-include("head_m.php");
+include("head_m.html");
 ?>
 
 <body onload="OnLoad()">
@@ -15,7 +15,7 @@ include("head_m.php");
 &nbsp;
 </div>
 
-<div class="list-back-btn" id="movil-return" onclick="window.location.replace('index.php');">
+<div class="list-back-btn" id="movil-return" onclick="window.location.replace('index.html');">
 	<img id="back-icon" class="icon-image" src="../images/back.png">&nbsp;Volver
 </div>
 
@@ -79,7 +79,7 @@ function LoadData(msg) {
 }
 
 function LoadAlarma(part) {
-    window.location.replace('alarma_m.php?Part=' + part);
+    window.location.replace('alarma_m.html?Part=' + part);
 }
 
 function OnLoad() {
@@ -90,5 +90,5 @@ function OnLoad() {
 
 </body>
 <?php
-include("foot_m.php");
+include("foot_m.html");
 ?>

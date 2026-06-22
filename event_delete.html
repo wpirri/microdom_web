@@ -14,7 +14,7 @@
 
 <body onload="OnLoad();">
 
-<div id='event_delete_back_btn' class='back-btn' onclick="window.location.replace('event_list.php');" >
+<div id='event_delete_back_btn' class='back-btn' onclick="window.location.replace('event_list.html');" >
 	<img id='event_delete_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Cancelar
 </div>
 
@@ -75,7 +75,7 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmevent.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/cgi-bin/abmev.cgi?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'event_delete_div', 'Borrar Objeto'))
         .catch(error => {
@@ -87,7 +87,7 @@
     function SaveData() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmevent.cgi?funcion=delete&Id=" + id) // Consulta
+        fetch("/cgi-bin/abmev.cgi?funcion=delete&Id=" + id) // Consulta
         .catch(function(){} )
         .finally(function(){ window.location.replace('event_list.html'); });
     }

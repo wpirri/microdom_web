@@ -16,7 +16,7 @@
 
 <form id="add_form" name="add_form" method="post">
 
-<div id='event_add_back_btn' class='back-btn' onclick="window.location.replace('event_list.php');" >
+<div id='event_add_back_btn' class='back-btn' onclick="window.location.replace('event_list.html');" >
 	<img id='event_add_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Cancelar
 </div>
 
@@ -75,7 +75,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmaevent.cgi?funcion=get&Id=0") // Consulta
+        fetch("/cgi-bin/abmev.cgi?funcion=get&Id=0") // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'event_add_div', 'Evento Nuevo'))
         .catch(error => {
@@ -95,7 +95,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmaevent.cgi?funcion=add", {
+        fetch("/cgi-bin/abmev.cgi?funcion=add", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

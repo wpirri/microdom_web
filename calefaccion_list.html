@@ -1,17 +1,28 @@
-<?php
-$TITLE='Calefacción'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Calefacci&oacute;n</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload='OnLoad();'>
 
-<div id='calefaccion_list_back_btn' class='back-btn' onclick="window.location.replace('<?php echo $AUTO_MENU?>');" >
+<div id='calefaccion_list_back_btn' class='back-btn' onclick="window.location.replace('auto_menu.html');" >
 	<img id='calefaccion_list_back_icon' class='icon-btn' src='images/back.png'>&nbsp;Volver
 </div>
 
+<!--
 <div id='calefaccion_list_add_btn' class='add-btn' onclick="window.location.replace('');" >
 	<img id='calefaccion_list_add__icon' class='icon-btn' src='images/add.png'>&nbsp;Nuevo
 </div>
+-->
 
 <div id='calefaccion_list_table_div' class='abm-div'></div>
 
@@ -27,6 +38,9 @@ include('head-abm.php');
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>

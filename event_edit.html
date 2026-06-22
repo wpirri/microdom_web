@@ -77,7 +77,7 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmevent.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/cgi-bin/abmev.cgi?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'event_edit_div', 'Modificar Evento'))
         .catch(error => {
@@ -97,7 +97,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmevent.cgi?funcion=update", {
+        fetch("/cgi-bin/abmev.cgi?funcion=update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

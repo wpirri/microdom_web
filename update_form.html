@@ -1,13 +1,22 @@
-<?php
-$TITLE='Actualizar'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Actualizar </title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload="OnLoad();">
 
-<form enctype="multipart/form-data" action="update_form.php" method="post" id="update_form" name="update_form" method="post">
+<form enctype="multipart/form-data" action="update_form.html" method="post" id="update_form" name="update_form" method="post">
 
-<div id='update_back_btn' class='back-btn' onclick="window.location.replace('<?php echo $CONFIG_MENU?>');" >
+<div id='update_back_btn' class='back-btn' onclick="window.location.replace('config_menu.html');" >
 	<img id='update_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Volver
 </div>
 
@@ -68,6 +77,9 @@ include('head-abm.php');
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>

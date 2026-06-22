@@ -1,31 +1,39 @@
-<?php
-$TITLE='Seguridad'; 
-include("head.php");
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Men&uacute; de Configuraci&oacute;n</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body>
 
-<div class="back-btn" id="back-from-config" onclick="window.location.replace('<?php echo $MAIN?>');">
+<div class="back-btn" id="back-from-config" onclick="window.location.replace('planta.html');">
 	<img id="back-icon" class="icon-btn" src="images/back.png">&nbsp;Volver
 </div>
 
 
 
-<div class="normal-btn" id="btn-seguridad-camara" onclick="window.location.replace('panel_camara.php');">
+<div class="normal-btn" id="btn-seguridad-camara" onclick="window.location.replace('panel_camara.html');">
 	<img id="user-icon" class="icon-btn" src="images/camara.png">&nbsp;C&aacute;maras
 </div>
 
-<div class="normal-btn" id="btn-seguridad-alarma" onclick="window.location.replace('panel_alarma.php');">
+<div class="normal-btn" id="btn-seguridad-alarma" onclick="window.location.replace('panel_alarma.html');">
 	<img id="upload-icon" class="icon-btn" src="images/lock1.png">&nbsp;Alarma
 </div>
 <!--
-<div class="normal-btn" id="btn-config-planta" onclick="window.location.replace('planta_edit.php');">
+<div class="normal-btn" id="btn-config-planta" onclick="window.location.replace('planta_edit.html');">
 	<img id="home-icon" class="icon-btn" src="images/home.png">&nbsp;Planta
 </div>
 -->
 
 <!--
-<div class="normal-btn" id="btn-config-hard" onclick="window.location.replace('hw_list.php');">
+<div class="normal-btn" id="btn-config-hard" onclick="window.location.replace('hw_list.html');">
 	<img id="disp-icon" class="icon-btn" src="images/hard.png">&nbsp;Dispositivos
 </div>
 -->
@@ -41,28 +49,28 @@ include("head.php");
 </div>-->
 
 <!--
-<div class="normal-btn" id="btn-config-flags" onclick="window.location.replace('flag_list.php');">
+<div class="normal-btn" id="btn-config-flags" onclick="window.location.replace('flag_list.html');">
 	<img id="flags-icon" class="icon-btn" src="images/var.png">&nbsp;Variables
 </div>
 <div class="normal-btn" id="btn-config-dummy3" onclick="window.location.replace('');">
 	<img id="crono-icon" class="icon-btn" src="images/cron.png">&nbsp;Programas
 </div>
 
-<div class="normal-btn" id="btn-config-alarm" onclick="window.location.replace('alarm_list.php');">
+<div class="normal-btn" id="btn-config-alarm" onclick="window.location.replace('alarm_list.html');">
 	<img id="alarm-icon" class="icon-btn" src="images/lock1.png">&nbsp;Alarma
 </div>
 
-<div class="normal-btn" id="btn-config-cameras" onclick="window.location.replace('camara_list.php');">
+<div class="normal-btn" id="btn-config-cameras" onclick="window.location.replace('camara_list.html');">
 	<img id="camera-icon" class="icon-btn" src="images/camara.png">&nbsp;C&aacute;maras
 </div>
 -->
 
 <!--
-<div class="normal-btn" id="btn-config-upload" onclick="window.location.replace('update_form.php');">
+<div class="normal-btn" id="btn-config-upload" onclick="window.location.replace('update_form.html');">
 	<img id="upload-icon" class="icon-btn" src="images/upload.png">&nbsp;Actualizaci&oacute;n
 </div>
 
-<div class="normal-btn" id="btn-config-download" onclick="window.location.replace('download_list.php');">
+<div class="normal-btn" id="btn-config-download" onclick="window.location.replace('download_list.html');">
 	<img id="logs-icon" class="icon-btn" src="images/download.png">&nbsp;Descargas
 </div>
 
@@ -70,14 +78,15 @@ include("head.php");
 	<img id="logs-icon" class="icon-btn" src="images/download.png">&nbsp;xxxxxxxx
 </div>
 
-<div class="normal-btn" id="btn-config-auto" onclick="window.location.replace('auto_menu.php');">
+<div class="normal-btn" id="btn-config-auto" onclick="window.location.replace('auto_menu.html');">
 	<img id="auto-icon" class="icon-btn" src="images/gear.png">&nbsp;Automatización
 </div>
 -->
 
 </body>
-<?php
-include("foot.php");
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
 
-
+</html>

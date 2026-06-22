@@ -1,32 +1,38 @@
-<?php
-$TITLE='Camaras'; 
-include('head-abm.php');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - C&aacute;maras</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload='OnLoad();'>
 
-<div id='camara_list_back_btn' class='back-btn' onclick="window.location.replace('<?php echo $CONFIG_MENU?>');" >
+<div id='camara_list_back_btn' class='back-btn' onclick="window.location.replace('config_menu.html');" >
 	<img id='camara_list_back_icon' class='icon-btn' src='images/back.png'>&nbsp;Volver
 </div>
 
-<div id='camara_list_add_btn' class='add-btn' onclick="window.location.replace('camara_add.php');" >
+<div id='camara_list_add_btn' class='add-btn' onclick="window.location.replace('camara_add.html');" >
 	<img id='camara_list_add__icon' class='icon-btn' src='images/add.png'>&nbsp;Nuevo
 </div>
 
 <div id='camara_list_table_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    function LoadData(msg) {
-        fillAbmList(JSON.parse(msg).response, 'camara_list_table_div', '<?php echo $TITLE; ?>', 'Id', 'camara_edit.php', 'camara_delete.php');
-    }
-
-    function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmcamara.cgi', LoadData, false);
-    }
+    // /cgi-bin/abmcamara.cgi
 </script>
 
 </body>
 
-<?php
-include('foot.php');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>
