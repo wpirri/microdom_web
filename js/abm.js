@@ -279,3 +279,96 @@ ListaEventoTouch[10] = 'Config';
 ListaEventoTouch[11] = 'Home';
 ListaEventoTouch[12] = 'Prev';
 ListaEventoTouch[13] = 'Next'
+
+function GetLabelFromValue(listvl, value) {
+    for (var i = 0; i < listvl.length; i++) {
+        if (listvl[i].value == value) {
+            return listvl[i].label;
+        }
+    }
+    return '';
+}
+
+/* Arma un Drop down listbox */
+function DropDownSelect(name, list, selected, onchange) {
+	var out = '';
+	if (selected == null) {
+		selected = (-1);
+	}
+
+	if(onchange == null) {
+		out += '<select name="' + name + '" id="' + name + '" class="abm-select">\n';
+	} else {
+		out += '<select name="' + name + '" id="' + name + '" class="abm-select" onchange="' + onchange + '">\n';
+	}
+
+	for (var i = 0; i < list.length; i++) {
+		if(i == selected) {
+			out += '<option selected value="' + i + '">' + list[i] + '</option>\n';
+		} else {
+			out += '<option value="' + i + '">' + list[i] + '</option>\n';
+		}
+	}
+	out += '</select>\n';
+	return out;
+}
+
+function DropDownSelectValueLabel(name, listvl, selected, onchange) {
+	var out = '';
+	if (selected == null) {
+		selected = (-1);
+	}
+
+	if(onchange == null) {
+		out += '<select name="' + name + '" id="' + name + '" class="abm-select">\n';
+	} else {
+		out += '<select name="' + name + '" id="' + name + '" class="abm-select" onchange="' + onchange + '">\n';
+	}
+
+	for (var i = 0; i < listvl.length; i++) {
+		if(listvl[i].value == selected) {
+			out += '<option selected value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+		} else {
+			out += '<option value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+		}
+	}
+	out += '</select>\n';
+	return out;
+}
+
+/* Arma una lista de selección múltiple */
+function ListMultiSelect(name, size, list, selected) {
+	if (selected == null) {
+		selected = [];
+	}
+	var out = '<select name="' + name + '" id="' + name + '" size="' + size + '" class="abm-multi-select" multiple>\n';
+
+	for (var i = 1; i < list.length; i++) {
+		if(i > 0) {
+			if( selected != null && selected.includes(i, 0) ) {
+				out += '<option selected value="' + i + '">' + list[i] + '</option>\n';
+			} else {
+				out += '<option value="' + i + '">' + list[i] + '</option>\n';
+			}
+		}
+	}
+	out += '</select>\n';
+	return out;
+}
+
+function ListMultiSelectValueLabel(name, size, listvl, selected) {
+	if (selected == null) {
+		selected = [];
+	}
+	var out = '<select name="' + name + '" id="' + name + '" size="' + size + '" class="abm-multi-select" multiple>\n';
+
+	for (var i = 1; i < listvl.length; i++) {
+        if( selected != null && selected.includes(listvl[i].value, 0) ) {
+            out += '<option selected value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+        } else {
+            out += '<option value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+        }
+	}
+	out += '</select>\n';
+	return out;
+}

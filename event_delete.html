@@ -10,6 +10,7 @@
 <link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
 <link href="css/abm.css" rel="stylesheet" type="text/css" />
 <script src="js/microdom.js" type="text/javascript"></script>
+<script src="js/abm.js" type="text/javascript"></script>
 </head>
 
 <body onload="OnLoad();">
@@ -25,6 +26,28 @@
 <div id='event_delete_div' class='abm-div'></div>
 
 <script type="text/javascript" >
+    // 0=Output, 1=Input, 2=Analog, 3=Output Alarma, 4=Input Alarma, 5=Output Pulse/Analog_Mult_Div_Valor=Pulse Param, 6=Periferico
+    var ass_list_input = [];
+    var ass_list_output = [];
+
+    function LoadAssignList(data) {
+        if(data.error != 0) return;
+        list = data.response;
+        for (var i = 0; i < list.length; i++) {
+            var ass = {};
+            ass.value = list[i].Id;
+            ass.label = list[i].Objeto;
+            if(list[i].Id == 0) {
+                ass_list_output.push(ass);
+                ass_list_input.push(ass);
+            } else if(list[i].Tipo == 0 || list[i].Tipo == 3 || list[i].Tipo == 5) {
+                ass_list_output.push(ass);
+            } else if(list[i].Tipo == 1 || list[i].Tipo == 4 || list[i].Tipo == 6) {
+                ass_list_input.push(ass);
+            }
+        }
+    }
+
     function ArmarTabla(data, dst_div, title) {
         var dst = document.getElementById(dst_div);
         if (!dst) return;
@@ -63,7 +86,21 @@
             output += '<tr>';
             output += '<th>' + (h === 'Id' ? '&nbsp;' : h) + '</th>';
             output += '<td>';
-            output += '<input type="' + (h === 'Id' ? 'hidden' : 'text') + '" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" readonly />';
+            if (h === 'Id') {
+                output += '<input type="hidden" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
+            } else if (h === 'Objeto_Origen') {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + GetLabelFromValue(ass_list_input, val) + '" readonly />';
+            } else if (h === 'Objeto_Destino') {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + GetLabelFromValue(ass_list_output, val) + '" readonly />';
+            } else if (h === 'ON_a_OFF') {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + ListaSiNo[val] + '" readonly />';
+            } else if (h === 'OFF_a_ON') {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + ListaSiNo[val] + '" readonly />';
+            } else if (h === 'Enviar') {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + TablaAcciones[val] + '" readonly />';
+            } else {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" readonly />';
+            }
             output += '</td>';
             output += '</tr>\n';
         }
@@ -75,6 +112,14 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
+
+        fetch("/cgi-bin/abmassign.cgi?funcion=listall") // Consulta para armar listado de objetos disponibles
+        .then(response => response.json())
+        .then(data => LoadAssignList(data))
+        .catch(error => {
+            console.error("Error al cargar lista de asignaciones: " + error);
+        });
+
         fetch("/cgi-bin/abmev.cgi?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'event_delete_div', 'Borrar Objeto'))
