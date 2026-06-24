@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SYSHOME V 4.0 - Modificar Plano de Planta</title>
 <link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
 <script src="js/microdom.js" type="text/javascript"></script>
 </head>
 
@@ -20,18 +21,173 @@
 </div>
 
 <div class="home-group" id="home-div">
-	<img class="home-image" id="plano1" src="images/home.png" />
+    <div id="planta">&nbsp;</div>
 </div>
 
+
 <script type="text/javascript" >
+	PLANTA=1;
+
+    var moveObj = false;
+    var delta_x = 0;
+    var delta_y = 0;
+    var mouse_pos_x = 0;
+    var mouse_pos_y = 0;
+    var pic_pos_x = 0;
+    var pic_pos_y = 0;
+    var pic_obj = null;
+
+    function onMouseDown(obj_id, js_id) {
+        // 0 : Left button
+        // 1 : Wheel or middle button (if present)
+        // 2 : Right button
+        if(event.button == 0) {
+            if(moveObj) {
+                moveObj = false;
+                if(pic_pos_x > 0 && pic_pos_y > 0) {
+                    fetch('/cgi-bin/abmassign.cgi?funcion=update', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+						body: 'Id=' + obj_id + '&Cord_x=' + pic_pos_x + '&Cord_y=' + pic_pos_y
+					})
+					.catch(function(){} )
+					.finally(function(){})
+                }
+                pic_pos_x = 0;
+                pic_pos_y = 0;
+            } else {
+                moveObj = true;
+                pic_obj = document.getElementById(js_id);
+                pic_pos_x = pic_obj.offsetLeft;
+                pic_pos_y = pic_obj.offsetTop;
+                delta_x = 0;
+                delta_y = 0;
+                //alert('pic x: ' + pic_pos.x + ' y: ' + pic_pos.y + '\n css x: ' + pic_obj.offsetLeft + ' y: ' + pic_obj.offsetTop);
+            }
+        }
+    }
+
+    function onMouseUp(obj_id, js_id) {
+        mouseDown = false;
+    }
+
+    function onDblClick(obj_id, js_id) {
+        window.location.replace('edit_assign.html?Id=' + obj_id);
+    }
+
+    function onMouseMove(obj_id, js_id) {
+        if(moveObj) {
+            var e = window.event;
+            if(delta_x == 0 && delta_y == 0) {
+                delta_x = pic_pos_x - e.clientX;
+                delta_y = pic_pos_y - e.clientY;
+            }
+            pic_pos_x = e.clientX + delta_x;
+            pic_pos_y = e.clientY + delta_y;
+            //alert('pic x: ' + pic_pos.x + ' y: ' + pic_pos.y + '\n css x: ' + pic_obj.offsetLeft + ' y: ' + pic_obj.offsetTop);
+            pic_obj.style.left = pic_pos_x + "px";
+            pic_obj.style.top = pic_pos_y + "px";
+        }
+    }
+
+	function insertarEstilos(obj_list) {
+		// Crear el elemento <style>
+		const style = document.createElement("style");
+		let css = "";
+
+		obj_list.forEach(item => {
+			// Limpieza del nombre del objeto
+			let Objeto = item.Objeto.replace(/ /g, "").replace(/\./g, "");
+			// Coordenadas
+			let Cord_x = item.Cord_x;
+			let Cord_y = item.Cord_y;
+			// Construcción del bloque CSS
+			css += "#id-" + Objeto + " {z-index: 20;border: 0px;cursor: pointer;position: absolute;left: " + Cord_x + "px; top: " + Cord_y + "px;}\n";
+		});
+
+		// Insertar el CSS en el <style>
+		style.innerHTML = css;
+		// Agregar al <head>
+		document.head.appendChild(style);
+	}
+
+	function renderObjetosEdit(obj_list) {
+
+		objetos_planta = "";
+
+		try {    
+			obj_list.forEach(item => {
+				nombre = item.Objeto.replace(/ /g, "").replace(/\./g, "");
+				accion = "";
+				src = "";
+
+				// Imagen
+				src = "images/" + item.Icono_Encendido;
+				// Acciiones
+				on_mousedown = "onMouseDown(" + item.Id + ", 'id-" + nombre + "');";
+				on_dblclick = "onDblClick(" + item.Id + ", 'id-" + nombre + "');";
+				on_mousemove = "onMouseMove(" + item.Id + ", 'id-" + nombre + "');";
+				on_mouseup = "onMouseUp(" + item.Id + ", 'id-" + nombre + "');";
+
+				// Armo el tag de imagen
+				img = "<img id=\"id-" + nombre + "\" class=\"home-image\" src=\"" + src + "\" onmousedown=\"" + on_mousedown + "\" ondblclick=\"" + on_dblclick + "\" onmousemove=\"" + on_mousemove + "\" onmouseup=\"" + on_mouseup + "\" />\n";
+				// Voy apilando los objetos
+				objetos_planta += img;
+			});
+			objetos_planta += "<img class=\"home-image\" id=\"plano\" src=\"images/home.png\" />\r";
+			document.getElementById("planta").innerHTML = objetos_planta;
+
+			// Me traigo el plano y las coordenadas de scroll
+			fetch('/cgi-bin/abmsys.cgi?funcion=get_current') // Consulta
+				.then(response => response.json())
+				.then(data => loadHomePicture(data))
+				.catch(error => { document.getElementById("clima-exterior").innerHTML =
+									"<p>Error al obtener datos externos: " + error + "</p>"; });
+
+		} catch (e) { return; }
+	}
+
+	function loadHomePicture(msg) {
+		try {
+			jsonData = msg.response;
+			if(jsonData) {
+				var bg_data = jsonData.Planta1.split(';');
+				document.getElementById('plano').src = 'images/' + bg_data[0];
+				if(bg_data[1] != null && bg_data[2] != null)
+				{
+					setTimeout("ScrollMap(" + bg_data[1] + "," + bg_data[2] + ");", 1000);
+				}
+			}
+			// inicio el refresco de estado de los objetos
+			refreshHomeStatus();
+		} catch (e) { return; }
+	}
+
+	function ScrollMap(x, y) {
+		map = document.getElementById('home-div');
+		map.scrollLeft = x;
+		map.scrollTop = y;
+	}
+
+	function OnLoad( ) {
+		fetch('/cgi-bin/abmassign.cgi?funcion=info&Planta=' + PLANTA) // Consulta
+			.then(response => response.json())
+			.then(data => insertarEstilos(data.response))
+			.catch(error => { console.error('Error al obtener los estilos:', error); });
+
+		fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
+			.then(response => response.json())
+			.then(data => renderObjetosEdit(data.response))
+			.catch(error => { console.error('Error al obtener los objetos:', error); });
+	}
 
 </script>
 
 </body>
 
 <script type="text/javascript" >
-// 15 minutos de time-out de la pantalla por seguridad
-setTimeout("window.location.replace('index.html');", 900000);
+	// 15 minutos de time-out de la pantalla por seguridad
+	setTimeout("window.location.replace('index.html');", 900000);
 </script>
 
 </html>

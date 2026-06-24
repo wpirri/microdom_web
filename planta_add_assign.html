@@ -1,7 +1,16 @@
-<?php
-$TITLE='Agregar Objeto'; 
-include('head-abm.html');
-?>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>SYSHOME V 4.0 - Objetos</title>
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2026">
+<link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
+<link href="css/abm.css" rel="stylesheet" type="text/css" />
+<script src="js/microdom.js" type="text/javascript"></script>
+</head>
 
 <body onload='OnLoad();'>
 
@@ -12,73 +21,80 @@ include('head-abm.html');
 <div id='ass_list_table_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    // Pantalla de edici�n para agregar objetos al map
-    function fillAddAssignList(json_list, dst_div, title, add_fcn) { 
-        // Getting the all column names 
-        var headers = getAbmTableHedaer(json_list);
-        var output = '<div class=abm-table-title>&nbsp;' + title + '</div>\n<table class=abm-list-table>\n';
-        var i = 0;
-        var j = 0;
-        var index_value = '';
+	PLANTA=1;
 
-        // Header
-        output += '<tr>';
-        for (i = 0; i < headers.length; i++) { 
-            if(headers[i] != 'Id') {
-                output += '<th>';
-                output += headers[i];
-                output += '</th>';
-            }
+    function ArmarLista(data, divId, title, idField, addFcn) {
+        if(data.error != 0) {
+            document.getElementById(divId).innerHTML =
+                '<p>Error al obtener el listado de Objetos: ' + data.message + '</p>';
+            return;
         }
-        // Agrego la columna de add
-        output += '<th>Agregar</th>';
-        output += '</tr>\n';
-        // Datos
-        for (i = 0; i < json_list.length; i++) {
-            if(json_list[i]['Id'] > 0) {
-                output += '<tr>';
-                index_value = '';
-                for (j = 0; j < headers.length; j++) { 
-                    var val = json_list[i][headers[j]]; 
-                    // If there is any key, which is matching 
-                    // with the column name 
-                    if (val == null) val = "&nbsp;";   
-                    if(headers[j] == 'Id') {
-                        index_value = val;
-                    }
-                    else
-                    {
-                        output += '<td>';
-                        output += val;
-                        output += '</td>';
-                    }
-                } 
-                // Agrego el link de add
-                val = '<td><img src="images/edit.png" OnClick="' + add_fcn + '(' + index_value + ');"></a></td>' 
-                output += val;
-                output += '</tr>\n';
-            }
+
+        let html = '<div class=abm-table-title>&nbsp;' + title + '</div>\n';
+        const rows = Array.isArray(data.response) ? data.response : [];
+        if (rows.length === 0) {
+            html += '<p>No hay datos disponibles.</p>';
+            document.getElementById(divId).innerHTML = html;
+            return;
         }
-        output += '</table>\n';
-        document.getElementById(dst_div).innerHTML = output;
-    } 
 
-    function LoadData(msg) {
-        fillAddAssignList(JSON.parse(msg).response, 'ass_list_table_div', '<?php echo $TITLE; ?>', 'AddAssignToPlanta');
-    }
+        const fieldSet = new Set();
+        const fields = [];
+        rows.forEach(item => {
+            Object.keys(item).forEach(field => {
+                if (field !== idField && !fieldSet.has(field)) {
+                    fieldSet.add(field);
+                    fields.push(field);
+                }
+            });
+        });
 
-    function OnLoad() {
-        newAJAXCommand('/cgi-bin/abmassign.cgi', LoadData, false);
+        //html += "<table class='abm-table'><tr><th>ID</th>";
+        html += "<table class='abm-list-table'><tr>";
+        fields.forEach(field => {
+            html += "<th>" + field + "</th>";
+        });
+        html += "<th>Agregar</th></tr>";
+
+        rows.forEach(item => {
+            if(item[idField] != 0) {
+                html += "<tr>";
+                //html += "<td>" + (item[idField] ?? "") + "</td>";
+                fields.forEach(field => {
+                    html += "<td>" + (item[field] ?? "") + "</td>";
+                });
+                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Agregar' onclick=\"" + addFcn + "(" + item[idField] + ");\"></td>";
+                html += "</tr>";
+            }
+        });
+
+        html += "</table>";
+        document.getElementById(divId).innerHTML = html;
     }
 
     function AddAssignToPlanta(id) {
-        newAJAXCommand('/cgi-bin/abmassign.cgi?funcion=addassigntoplanta&Id=' + id, null, false);
-        setTimeout("window.location.replace('planta_edit.html');", 1000);
+        fetch('/cgi-bin/abmassign.cgi?funcion=addassigntoplanta&Id=' + id + '&Planta=' + PLANTA) // Consulta
+        .catch(function(){} )
+        .finally(function(){ window.location.replace('planta_edit.html'); });
     }
+
+    function OnLoad() {
+        fetch("/cgi-bin/abmassign.cgi") // Consulta
+        .then(response => response.json())
+        .then(data => ArmarLista(data, 'ass_list_table_div', 'Agregar Objeto', 'Id', 'AddAssignToPlanta'))
+        .catch(error => {
+            document.getElementById("ass_list_table_div").innerHTML =
+                '<p>Error al obtener el listado de Objetos: ' + error + '</p>';
+        });
+    }
+
 </script>
 
 </body>
 
-<?php
-include('foot.html');
-?>
+<script type="text/javascript" >
+// 15 minutos de time-out de la pantalla por seguridad
+setTimeout("window.location.replace('index.html');", 900000);
+</script>
+
+</html>
