@@ -31,6 +31,7 @@
     // 0=Output, 1=Input, 2=Analog, 3=Output Alarma, 4=Input Alarma, 5=Output Pulse/Analog_Mult_Div_Valor=Pulse Param, 6=Periferico
     var ass_list_input = [];
     var ass_list_output = [];
+    var group_list = [];
 
     function LoadAssignList(data) {
         if(data.error != 0) return;
@@ -47,6 +48,18 @@
             } else if(list[i].Tipo == 1 || list[i].Tipo == 4 || list[i].Tipo == 6) {
                 ass_list_input.push(ass);
             }
+        }
+    }
+
+    function LoadGroupList(data) {
+        if(data.error != 0) return;
+        list = data.response;
+        for (var i = 0; i < list.length; i++) {
+            var grp = {};
+            grp.value = list[i].Id;
+            grp.label = list[i].Grupo;
+
+            group_list.push(grp);
         }
     }
 
@@ -94,6 +107,8 @@
                 output += DropDownSelectValueLabel(h, ass_list_input, val, null);
             } else if (h === 'Objeto_Destino') {
                 output += DropDownSelectValueLabel(h, ass_list_output, val, null);
+            } else if (h === 'Grupo_Destino') {
+                output += DropDownSelectValueLabel(h, group_list, val, null);
             } else if (h === 'ON_a_OFF') {
                 output += DropDownSelect(h, ListaSiNo, val, null);
             } else if (h === 'OFF_a_ON') {
@@ -118,6 +133,13 @@
         fetch("/cgi-bin/abmassign.cgi?funcion=listall") // Consulta para armar listado de objetos disponibles
         .then(response => response.json())
         .then(data => LoadAssignList(data))
+        .catch(error => {
+            console.error("Error al cargar lista de asignaciones: " + error);
+        });
+
+        fetch("/cgi-bin/abmgroup.cgi?funcion=listall") // Consulta para armar listado de grupos
+        .then(response => response.json())
+        .then(data => LoadGroupList(data))
         .catch(error => {
             console.error("Error al cargar lista de asignaciones: " + error);
         });

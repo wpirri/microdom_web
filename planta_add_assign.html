@@ -57,7 +57,7 @@
         html += "<th>Agregar</th></tr>";
 
         rows.forEach(item => {
-            if(item[idField] != 0) {
+            if(item[idField] != 0 && (item.Tipo == 0 || item.Tipo == 3 || item.Tipo == 5)) {
                 html += "<tr>";
                 //html += "<td>" + (item[idField] ?? "") + "</td>";
                 fields.forEach(field => {

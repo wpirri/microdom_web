@@ -29,7 +29,7 @@
     function ArmarLista(data, divId, title, idField, editPage, deletePage) {
         if(data.error != 0) {
             document.getElementById(divId).innerHTML =
-                '<p>Error al obtener el listado de HW: ' + data.message + '</p>';
+                '<p>Error al obtener el listado de Tareas: ' + data.message + '</p>';
             return;
         }
 
