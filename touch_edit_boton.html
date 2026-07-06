@@ -10,13 +10,14 @@
 <link href="css/dompiweb.css" rel="stylesheet" type="text/css" />
 <link href="css/abm.css" rel="stylesheet" type="text/css" />
 <script src="js/microdom.js" type="text/javascript"></script>
+<script src="js/abm.js" type="text/javascript"></script>
 </head>
 
 <body onload="OnLoad();">
 
 <form id="edit_form" name="edit_form" method="post">
 
-<div id='touch_edit_back_btn' class='back-btn' onclick="window.location.replace('touch_list_boton.html?Id=<?php echo $_GET['Id']; ?>&Pantalla=<?php echo $_GET['Pantalla']; ?>');" >
+<div id='touch_edit_back_btn' class='back-btn' onclick="GoBack();" >
 	<img id='touch_edit_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Cancelar
 </div>
 
@@ -27,6 +28,144 @@
 <div id='touch_edit_div' class='abm-div'></div>
 
 <script type="text/javascript" >
+	const params = new URLSearchParams(window.location.search);
+	const id = params.get('Id'); // recupera el valor de ?Id=123	
+	const pantalla = params.get('Pantalla'); // recupera el valor de ?Pantalla=1
+	const boton = params.get('Boton'); // recupera el valor de ?Boton=1
+
+    var hw_list = [];
+    var ass_list = [];
+
+    function LoadHWList(data) {
+        list = data.response;
+        for (var i = 0; i < list.length; i++) {
+            var hw = {};
+            hw.value = list[i].Id;
+            hw.label = list[i].Dispositivo;
+            hw_list.push(hw);
+        }
+		
+		fetch("/cgi-bin/abmassign.cgi?funcion=listall") // Consulta para armar listado de objetos disponibles
+        .then(response => response.json())
+        .then(data => LoadAssignList(data))
+        .catch(error => {
+            console.error("Error al cargar lista de asignaciones: " + error);
+        });
+    }
+
+    function LoadAssignList(data) {
+        if(data.error != 0) return;
+        list = data.response;
+        for (var i = 0; i < list.length; i++) {
+            var ass = {};
+            ass.value = list[i].Id;
+            ass.label = list[i].Objeto;
+            if(list[i].Id == 0) {
+                ass_list.push(ass);
+            } else if(list[i].Tipo == 0 || list[i].Tipo == 3 || list[i].Tipo == 5) {
+                ass_list.push(ass);
+            }
+        }
+
+        fetch("/cgi-bin/abmtouch.cgi?funcion=get&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + boton) // Consulta
+        .then(response => response.json())
+        .then(data => ArmarTabla(data, 'touch_edit_div', 'Editar Boton'))
+        .catch(error => {
+            document.getElementById("touch_edit_div").innerHTML =
+                "<p>Error al obtener datos: " + error + "</p>";
+        });
+    }
+
+    function ArmarTabla(data, dst_div, title) {
+        var dst = document.getElementById(dst_div);
+        if (!dst) return;
+
+        if (!data || typeof data !== 'object') {
+            dst.innerHTML = '<p>Error: datos inválidos.</p>';
+            return;
+        }
+
+        if (data.error !== 0) {
+            dst.innerHTML = '<p>' + (data.message ? data.message : 'Error desconocido') + '</p>';
+            return;
+        }
+
+        var response = data.response;
+        if (!response || typeof response !== 'object') {
+            dst.innerHTML = '<p>Error: respuesta inválida.</p>';
+            return;
+        }
+
+        var obj = Array.isArray(response) ? (response.length ? response[0] : {}) : response;
+
+        var headers = [];
+        for (var k in obj) {
+            if (headers.indexOf(k) === -1) headers.push(k);
+        }
+
+        var output = '<p class=abm-table-title>' + title + '</p>\n';
+        output += '<table class=abm-table id=abm_edit_table>\n';
+
+        for (var i = 0; i < headers.length; i++) {
+            var h = headers[i];
+            var val = obj[h];
+            if (val === null || val === undefined || val === 'NULL') val = '';
+
+            output += '<tr>';
+            output += '<th>' + (h === 'Id' ? '&nbsp;' : h) + '</th>';
+            output += '<td>';
+            if (h === 'Id') {
+                output += '<input type="hidden" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
+			} else if (h === 'Dispositivo') {
+				output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + GetLabelFromValue(hw_list, val) + '" readonly />';
+            } else if (h === 'Evento') {
+                output += DropDownSelect(h, ListaEventoTouch, val, null);
+            } else if (h === 'Objeto') {
+                output += DropDownSelectValueLabel(h, ass_list, val, null);
+            } else {
+                output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
+            }
+            output += '</td>';
+            output += '</tr>\n';
+        }
+
+        output += '</table>\n';
+        dst.innerHTML = output;
+    }
+
+    function OnLoad() {
+        fetch("/cgi-bin/abmhw.cgi?funcion=listall") // Consulta para armar listado de HW disponibles
+        .then(response => response.json())
+        .then(data => LoadHWList(data))
+        .catch(error => {
+            console.error("Error al cargar lista de HW: " + error);
+        });
+    }
+    
+    function SaveData() {
+        var kvpairs = [];
+        var form = document.getElementById('edit_form');
+        if (!form) return;
+
+        for ( var i = 0; i < form.elements.length; i++ ) {
+            var e = form.elements[i];
+            if (!e.name) continue;
+            kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
+        }
+
+        fetch("/cgi-bin/abmtouch.cgi?funcion=update", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: kvpairs.join('&')
+        })
+        .catch(function(){} )
+        .finally(function(){ window.location.replace('touch_list_boton.html?Id=' + id + '&Pantalla=' + pantalla); });
+    }
+
+	function GoBack() {
+		window.location.replace('touch_list_boton.html?Id=' + id + '&Pantalla=' + pantalla);
+    }
+
 </script>
 
 </form>

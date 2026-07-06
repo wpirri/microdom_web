@@ -83,7 +83,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmauto.cgi") // Consulta
+        fetch("/cgi-bin/abmauto.cgi?funcion=list&Tipo=1") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'riego_list_table_div', 'Circuitos de Riego', 'Id', 'riego_edit.html', 'riego_delete.html'))
         .catch(error => {
