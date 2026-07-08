@@ -57,7 +57,7 @@
         fields.forEach(field => {
             html += "<th>" + field + "</th>";
         });
-        html += "<th>Editar</th></tr>";
+        html += "<th>Editar</th><th>Actualizar</th></tr>";
 
         rows.forEach(item => {
             if(item[idField] != 0) {
@@ -71,6 +71,7 @@
                     }
                 });
                 html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateConfig(" + item[idField] + ")\"></td>";
                 html += "</tr>";
             }
         });
@@ -87,6 +88,10 @@
             document.getElementById("touch_list_table_div").innerHTML =
                 '<p>Error al obtener el listado de Tactiles: ' + error + '</p>';
         });
+    }
+
+    function UpdateConfig(id) {
+        fetch('/cgi-bin/abmhw.cgi?funcion=update_config&Id=' + id)
     }
 </script>
 

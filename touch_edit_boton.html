@@ -117,11 +117,19 @@
             if (h === 'Id') {
                 output += '<input type="hidden" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
 			} else if (h === 'Dispositivo') {
-				output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + GetLabelFromValue(hw_list, val) + '" readonly />';
+				output += DropDownSelectValueLabel(h, hw_list, val, null);
             } else if (h === 'Evento') {
                 output += DropDownSelect(h, ListaEventoTouch, val, null);
             } else if (h === 'Objeto') {
                 output += DropDownSelectValueLabel(h, ass_list, val, null);
+            } else if (h === 'Color_pantalla') {
+                output += DropDownSelectValueLabel(h, Color, val, null);
+            } else if (h === 'Color_borde') {
+                output += DropDownSelectValueLabel(h, Color, val, null);
+            } else if (h === 'Color_fondo') {
+                output += DropDownSelectValueLabel(h, Color, val, null);
+            } else if (h === 'Color_texto') {
+                output += DropDownSelectValueLabel(h, Color, val, null);
             } else {
                 output += '<input type="text" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
             }

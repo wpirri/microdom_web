@@ -280,6 +280,27 @@ ListaEventoTouch[11] = 'Home';
 ListaEventoTouch[12] = 'Prev';
 ListaEventoTouch[13] = 'Next'
 
+var Color = [];
+Color[0] =  { value: 0,     label: 'BLACK'}
+Color[1] =  { value: 31,    label: 'BLUE'}
+Color[2] =  { value: 63488, label: 'RED'}
+Color[3] =  { value: 2016,  label: 'GREEN'}
+Color[4] =  { value: 2047,  label: 'CYAN'}
+Color[5] =  { value: 63519, label: 'MAGENTA'}
+Color[6] =  { value: 65504, label: 'YELLOW'}
+Color[7] =  { value: 65535, label: 'WHITE'}
+Color[8] =  { value: 15,    label: 'NAVY'}
+Color[9] =  { value: 992,   label: 'DARKGREEN'}
+Color[10] = { value: 1007,  label: 'DARKCYAN'}
+Color[11] = { value: 30720, label: 'MAROON'}
+Color[12] = { value: 30735, label: 'PURPLE'}
+Color[13] = { value: 31712, label: 'OLIVE'}
+Color[14] = { value: 49688, label: 'LIGHTGREY'}
+Color[15] = { value: 31727, label: 'DARKGREY'}
+Color[16] = { value: 64800, label: 'ORANGE'}
+Color[17] = { value: 45029, label: 'GREENYELLOW'}
+Color[18] = { value: 63519, label: 'PINK'}
+
 function GetLabelFromValue(listvl, value) {
     for (var i = 0; i < listvl.length; i++) {
         if (listvl[i].value == value) {

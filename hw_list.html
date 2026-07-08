@@ -57,7 +57,7 @@
         fields.forEach(field => {
             html += "<th>" + field + "</th>";
         });
-        html += "<th>Modificar</th><th>Eliminar</th></tr>";
+        html += "<th>Modificar</th><th>Eliminar</th><th>Actualizar</th></tr>";
 
         rows.forEach(item => {
             if(item[idField] != 0) {
@@ -74,6 +74,7 @@
                 });
                 html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
                 html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateFirmware(" + item[idField] + ")\"></td>";
                 html += "</tr>";
             }
         });
@@ -91,6 +92,11 @@
                 '<p>Error al obtener el listado de HW: ' + error + '</p>';
         });
     }
+
+    function UpdateFirmware(id) {
+        fetch('/cgi-bin/abmhw.cgi?funcion=update_firmware&Id=' + id)
+    }
+
 </script>
 
 </body>

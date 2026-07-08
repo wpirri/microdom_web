@@ -65,21 +65,19 @@
         html += "<th>Modificar</th><th>Eliminar</th></tr>";
 
         rows.forEach(item => {
-            if(item[idField] != 0) {
-                html += "<tr>";
-                //html += "<td>" + (item[idField] ?? "") + "</td>";
-                fields.forEach(field => {
-					if( field == "Nro") {
-						if(item[field] > max_boton) {
-							max_boton = item[field];
-						}
-					}
-					html += "<td>" + (item[field] ?? "") + "</td>";
-                });
-                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + item[idField] + "');\"></td>";
-                html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"DelBoton(" + item[idField] + ");\"></td>";
-                html += "</tr>";
-            }
+            html += "<tr>";
+            //html += "<td>" + (item[idField] ?? "") + "</td>";
+            fields.forEach(field => {
+                if( field == "Nro") {
+                    if(item[field] > max_boton) {
+                        max_boton = item[field];
+                    }
+                }
+                html += "<td>" + (item[field] ?? "") + "</td>";
+            });
+            html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + item[idField] + "');\"></td>";
+            html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"DelBoton(" + item[idField] + ");\"></td>";
+            html += "</tr>";
         });
 
         html += "</table>";
