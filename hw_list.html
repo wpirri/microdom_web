@@ -57,7 +57,7 @@
         fields.forEach(field => {
             html += "<th>" + field + "</th>";
         });
-        html += "<th>Modificar</th><th>Eliminar</th><th>Actualizar</th></tr>";
+        html += "<th>Modificar</th><th>Eliminar</th><th>FW</th><th>WiFi</th><th>I/O</th></tr>";
 
         rows.forEach(item => {
             if(item[idField] != 0) {
@@ -75,6 +75,8 @@
                 html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
                 html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
                 html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateFirmware(" + item[idField] + ")\"></td>";
+                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateWiFi(" + item[idField] + ")\"></td>";
+                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateIOConfig(" + item[idField] + ")\"></td>";
                 html += "</tr>";
             }
         });
@@ -95,6 +97,14 @@
 
     function UpdateFirmware(id) {
         fetch('/cgi-bin/abmhw.cgi?funcion=update_firmware&Id=' + id)
+    }
+
+    function UpdateWiFi(id) {
+        fetch('/cgi-bin/abmhw.cgi?funcion=update_wifi&Id=' + id)
+    }
+
+    function UpdateIOConfig(id) {
+        fetch('/cgi-bin/abmhw.cgi?funcion=update_ioconfig&Id=' + id)
     }
 
 </script>
