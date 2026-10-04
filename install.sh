@@ -1,9 +1,16 @@
 #!/bin/sh
 
-sudo mkdir -p /var/lib/microdom/html/images
+sudo mkdir -p /var/lib/microdom/download
 sudo mkdir -p /var/lib/microdom/html/css
-sudo mkdir -p /var/lib/microdom/html/js
 sudo mkdir -p /var/lib/microdom/html/data
+sudo mkdir -p /var/lib/microdom/html/images
+sudo mkdir -p /var/lib/microdom/html/js
+sudo mkdir -p /var/lib/microdom/html/m
+sudo mkdir -p /var/lib/microdom/html/upload
+
+chmod 0777 /var/lib/microdom/download
+chmod 0777 /var/lib/microdom/html/data
+chmod 0777 /var/lib/microdom/html/upload
 
 sudo cp -uva *.html /var/lib/microdom/html/
 sudo cp -uva images/* /var/lib/microdom/html/images/
