@@ -1,13 +1,16 @@
-<?php
-$TITLE='Estados'; 
-include("head_m.html");
-?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SYSHOME MOBILE V 4.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Walter Pirri" >
+<meta name="keywords" content="SMART HOME, SYSHOME, DOMOTIC, SECURITY SYSTEM, IOT">
+<meta name="description" content="Sistema integrado de monitoreo, alarma y domotica">
+<meta name="system-build" content="2023">
+<link href="../css/movil.css" rel="stylesheet" type="text/css" />
+<script src="../js/microdom.js" type="text/javascript"></script>
+</head>
 
-<?php
-    $grupo = $_GET['grupo'];
-?>
-
-<body onload="InitUpdate()">
+<body onload="OnLoad()">
 
 <div class="desktop-group" id="desktop">
 
@@ -26,105 +29,124 @@ include("head_m.html");
 </div>
 
 <script type="text/javascript">
+const params = new URLSearchParams(window.location.search);
+const grupo = params.get('grupo');
 
 // Parses the xmlResponse from status.xml and updates the status box
-function LoadData(msg) {
+function CreateList(msg) {
     try {
 		// Armo el listado de objetos
 		var i = 0;
-		var json_list = JSON.parse(msg).response;
 		var output = '';
 		var filename = '';
 		
-		if(!json_list) return;
+		if(!msg) return;
 		// Cabecera
-		<?php if($grupo == 2) { ?>
+		if(grupo == 2) { 
 		output += '<div class="list-head" id="list-head2" >\n';
 		output += '<img id="icon-image2" class="icon-image" src="../images/lamp1.png" >&nbsp;Luces\n';
 		output += '</div>\n';
-		<?php } else if($grupo == 3) { ?>
+		} else if(grupo == 3) { 
 		output += '<div class="list-head"  id="list-head3" >\n';
 		output += '<img id="icon-image3" class="icon-image" src="../images/door1.png" >&nbsp;Puertas\n';
 		output += '</div>\n';
-		<?php } else if($grupo == 4) { ?>
+		} else if(grupo == 4) { 
 		output += '<div class="list-head"  id="list-head4" >\n';
 		output += '<img id="icon-image4" class="icon-image" src="../images/calef1.png" >&nbsp;Clima\n';
 		output += '</div>\n';
-		<?php } else if($grupo == 5) { ?>
+		} else if(grupo == 5) { 
 		output += '<div class="list-head"  id="list-head5" >\n';
 		output += '<img id="icon-image5" class="icon-image" src="../images/camara.png" >&nbsp;C&aacute;maras\n';
 		output += '</div>\n';
-		<?php } else if($grupo == 6) { ?>
+		} else if(grupo == 6) { 
 		output += '<div class="list-head"  id="list-head6" >\n';
 		output += '<img id="icon-image6" class="icon-image" src="../images/gear.png" >&nbsp;Riego\n';
 		output += '</div>\n';
-		<?php } ?>
+		} 
 		document.getElementById('event-head').innerHTML = output;
 		
 		// listado
 		output = '';
-		for (i = 0; i < json_list.length; i++) {
-		    if(json_list[i].Estado == 0)
+		for (i = 0; i < msg.length; i++) {
+		    if(msg[i].Estado == 0)
 		    {
-		        filename = json_list[i].Icono_Apagado;
+		        filename = msg[i].Icono_Apagado;
 		    }
-		    else if(json_list[i].Estado == 1)
+		    else if(msg[i].Estado == 1)
 		    {
-		        filename = json_list[i].Icono_Encendido;
+		        filename = msg[i].Icono_Encendido;
 		    }
-		    else if(json_list[i].Estado == 2)
+		    else if(msg[i].Estado == 2)
 		    {
-		        filename = json_list[i].Icono_Auto;
+		        filename = msg[i].Icono_Auto;
 		    }
 		
-		    output += '<div class="list-btn-group<?php echo $grupo; ?>" id="list-btn' + i + '" onClick="ChangeStatus(\'' + json_list[i].Objeto + '\');">\n';
-		    output += '<img id="boton' + i + '" class="icon-image" src="../images/' + filename + '">&nbsp;' + json_list[i].Objeto + '\n';
+		    output += '<div class="list-btn-group' + grupo + '" id="list-btn' + i + '" onClick="ChangeStatus(\'' + msg[i].Objeto + '\');">\n';
+		    output += '<img id="img-boton' + i + '" class="icon-image" src="../images/' + filename + '">&nbsp;' + msg[i].Objeto + '\n';
 		    output += '</div>\n';
 		}    
 		document.getElementById('event-list').innerHTML = output;
 
     } catch (e) { }
 
-    newAJAXCommand('/cgi-bin/dompi_mobile.cgi?funcion=list&Grupo=<?php echo $grupo; ?>', UpdateStatus, true);
+	RefreshListData();
 }
 
-function UpdateStatus(msg) {
+function UpdateList(msg) {
     try {
         // actualizo el estado de los objetos
         var i = 0;
-        var json_list = JSON.parse(msg).response;
         var filename = '';
 
-        if(!json_list) return;
+        if(!msg) return;
 
-        for (i = 0; i < json_list.length; i++) {
-            if(json_list[i].Estado == 0)
+        for (i = 0; i < msg.length; i++) {
+            if(msg[i].Estado == 0)
             {
-                filename = json_list[i].Icono_Apagado;
+                filename = msg[i].Icono_Apagado;
             }
-            else if(json_list[i].Estado == 1)
+            else if(msg[i].Estado == 1)
             {
-                filename = json_list[i].Icono_Encendido;
+                filename = msg[i].Icono_Encendido;
             }
-            else if(json_list[i].Estado == 2)
+            else if(msg[i].Estado == 2)
             {
-                filename = json_list[i].Icono_Auto;
+                filename = msg[i].Icono_Auto;
             }
-            document.getElementById('boton' + i).src = '../images/' + filename;
+            document.getElementById('img-boton' + i).src = '../images/' + filename;
         }
 	} catch (e) { }
+
 }
 
-function InitUpdate() {
-    newAJAXCommand('/cgi-bin/dompi_mobile.cgi?funcion=list&Grupo=<?php echo $grupo; ?>', LoadData, false);
+function OnLoad() {
+	fetch('/cgi-bin/dompi_mobile.cgi?funcion=list&Grupo=' + grupo) // Consulta
+	.then(response => response.json())
+	.then(data => CreateList(data.response))
+	.catch(error => {
+		document.getElementById("event-head").innerHTML =
+		"<p>Error al obtener datos: " + error + "</p>";
+	});
 }
+
+function RefreshListData() {
+	fetch('/cgi-bin/dompi_mobile.cgi?funcion=list&Grupo=' + grupo) // Consulta
+	.then(response => response.json())
+	.then(data => UpdateList(data.response))
+	.catch(error => {
+		document.getElementById("event-head").innerHTML =
+		"<p>Error al obtener datos: " + error + "</p>";
+	});
+
+	window.setTimeout("RefreshListData();", 1000); // Refrescar cada 1 segundo
+}
+
 
 function ChangeStatus(objeto) {
-    newAJAXCommand('/cgi-bin/dompi_mobile.cgi?funcion=touch&Objeto=' + objeto, null, false);
+	fetch('/cgi-bin/dompi_mobile.cgi?funcion=touch&Objeto=' + objeto);
 }
 </script>
 
 </body>
-<?php
-include("foot_m.html");
-?>
+
+</html>

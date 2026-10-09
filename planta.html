@@ -168,7 +168,7 @@
 			.then(response => response.json())
 			.then(data => updateHomeStatus(data))
 			.catch(error => { });
-		window.setTimeout("refreshHomeStatus();", 5000); // Refrescar cada 5 segundos
+		window.setTimeout("refreshHomeStatus();", 1000); // Refrescar cada 1 segundo
 	}
 
 	function OnLoad( ) {
