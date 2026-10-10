@@ -99,14 +99,14 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi?funcion=listall") // Consulta para armar listado de HW disponibles
+        fetch("/abm/abmhw?funcion=listall") // Consulta para armar listado de HW disponibles
         .then(response => response.json())
         .then(data => LoadHWList(data))
         .catch(error => {
             console.error("Error al cargar lista de HW: " + error);
         });
 
-        fetch("/cgi-bin/abmassign.cgi?funcion=get&Id=0") // Consulta
+        fetch("/abm/abmassign?funcion=get&Id=0") // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'ass_add_div', 'Objeto Nuevo'))
         .catch(error => {
@@ -126,7 +126,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmassign.cgi?funcion=add", {
+        fetch("/abm/abmassign?funcion=add", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

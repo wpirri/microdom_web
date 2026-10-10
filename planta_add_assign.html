@@ -73,13 +73,13 @@
     }
 
     function AddAssignToPlanta(id) {
-        fetch('/cgi-bin/abmassign.cgi?funcion=addassigntoplanta&Id=' + id + '&Planta=' + PLANTA) // Consulta
+        fetch('/abm/abmassign?funcion=addassigntoplanta&Id=' + id + '&Planta=' + PLANTA) // Consulta
         .catch(function(){} )
         .finally(function(){ window.location.replace('planta_edit.html'); });
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmassign.cgi") // Consulta
+        fetch("/abm/abmassign") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'ass_list_table_div', 'Agregar Objeto', 'Id', 'AddAssignToPlanta'))
         .catch(error => {

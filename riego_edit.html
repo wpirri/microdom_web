@@ -77,7 +77,7 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmauto.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/abm/abmauto?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'riego_edit_div', 'Editar Circuito de Riego'))
         .catch(error => {
@@ -97,7 +97,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmauto.cgi?funcion=update", {
+        fetch("/abm/abmauto?funcion=update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

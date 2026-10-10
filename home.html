@@ -122,7 +122,7 @@ function setCurrentTime( ) {
     {
       timer_counter = 0;
       // Get Local data
-      fetch("/cgi-bin/abmassign.cgi?funcion=status&Planta=1") // Consulta
+      fetch("/abm/abmassign?funcion=status&Planta=1") // Consulta
         .then(response => response.json())
         .then(data => updateLocalStatus(data))
         .catch(error => {

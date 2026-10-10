@@ -127,21 +127,21 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmassign.cgi?funcion=listall") // Consulta para armar listado de objetos
+        fetch("/abm/abmassign?funcion=listall") // Consulta para armar listado de objetos
         .then(response => response.json())
         .then(data => LoadAssignList(data))
         .catch(error => {
             console.error("Error al cargar lista de asignaciones: " + error);
         });
 
-        fetch("/cgi-bin/abmgroup.cgi?funcion=listall") // Consulta para armar listado de grupos
+        fetch("/abm/abmgroup?funcion=listall") // Consulta para armar listado de grupos
         .then(response => response.json())
         .then(data => LoadGroupList(data))
         .catch(error => {
             console.error("Error al cargar lista de asignaciones: " + error);
         });
 
-        fetch("/cgi-bin/abmev.cgi?funcion=get&Id=0") // Consulta
+        fetch("/abm/abmev?funcion=get&Id=0") // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'event_add_div', 'Evento Nuevo'))
         .catch(error => {
@@ -161,7 +161,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmev.cgi?funcion=add", {
+        fetch("/abm/abmev?funcion=add", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

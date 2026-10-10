@@ -98,7 +98,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi?funcion=listall") // Consulta para armar listado de HW disponibles
+        fetch("/abm/abmhw?funcion=listall") // Consulta para armar listado de HW disponibles
         .then(response => response.json())
         .then(data => LoadHWList(data))
         .catch(error => {
@@ -107,7 +107,7 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmassign.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/abm/abmassign?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'ass_edit_div', 'Modificar Objeto'))
         .catch(error => {
@@ -127,7 +127,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmassign.cgi?funcion=update", {
+        fetch("/abm/abmassign?funcion=update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

@@ -45,7 +45,7 @@
             hw_list.push(hw);
         }
 		
-		fetch("/cgi-bin/abmassign.cgi?funcion=listall") // Consulta para armar listado de objetos disponibles
+		fetch("/abm/abmassign?funcion=listall") // Consulta para armar listado de objetos disponibles
         .then(response => response.json())
         .then(data => LoadAssignList(data))
         .catch(error => {
@@ -67,7 +67,7 @@
             }
         }
 
-        fetch("/cgi-bin/abmtouch.cgi?funcion=get&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + boton) // Consulta
+        fetch("/abm/abmtouch?funcion=get&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + boton) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'touch_edit_div', 'Editar Boton'))
         .catch(error => {
@@ -142,7 +142,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi?funcion=listall") // Consulta para armar listado de HW disponibles
+        fetch("/abm/abmhw?funcion=listall") // Consulta para armar listado de HW disponibles
         .then(response => response.json())
         .then(data => LoadHWList(data))
         .catch(error => {
@@ -161,7 +161,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmtouch.cgi?funcion=update", {
+        fetch("/abm/abmtouch?funcion=update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

@@ -4,7 +4,7 @@
     $SERVER_PORT = $_SERVER['SERVER_PORT'];
 
     if( !isset($PLANTA)) $PLANTA = 1;
-    $obj_list = json_decode(file_get_contents($REQUEST_SCHEME."://".$SERVER_NAME.":".$SERVER_PORT."/cgi-bin/abmassign.cgi?funcion=status&Planta=".$PLANTA), true)['response'];
+    $obj_list = json_decode(file_get_contents($REQUEST_SCHEME."://".$SERVER_NAME.":".$SERVER_PORT."/abm/abmassign?funcion=status&Planta=".$PLANTA), true)['response'];
 
     ?>
     <script type="text/javascript" >
@@ -24,7 +24,7 @@
         if(event.button == 0) {
             if(moveObj) {
                 if(pic_pos_x > 0 && pic_pos_y > 0) {
-                    newAJAXCommand('/cgi-bin/abmassign.cgi?funcion=update', null, false, 'Id=' + obj_id + '&Cord_x=' + pic_pos_x + '&Cord_y=' + pic_pos_y);
+                    newAJAXCommand('/abm/abmassign?funcion=update', null, false, 'Id=' + obj_id + '&Cord_x=' + pic_pos_x + '&Cord_y=' + pic_pos_y);
                 }
                 moveObj = false;
                 pic_pos_x = 0;

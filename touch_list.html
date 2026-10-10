@@ -81,7 +81,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmtouch.cgi") // Consulta
+        fetch("/abm/abmtouch") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'touch_list_table_div', 'Tactiles', 'Id', 'touch_list_screen.html'))
         .catch(error => {
@@ -91,7 +91,7 @@
     }
 
     function UpdateConfig(id) {
-        fetch('/cgi-bin/abmhw.cgi?funcion=update_config&Id=' + id)
+        fetch('/abm/abmhw?funcion=update_config&Id=' + id)
     }
 </script>
 

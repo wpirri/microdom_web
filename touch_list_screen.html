@@ -85,7 +85,7 @@
 
     function OnLoad() {
 		max_pantalla = 0;
-        fetch("/cgi-bin/abmtouch.cgi?funcion=list&Id=" + id) // Consulta
+        fetch("/abm/abmtouch?funcion=list&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'touch_list_table_div', 'Tactiles - Pantallas', 'Pantalla', 'touch_list_boton.html'))
         .catch(error => {
@@ -97,14 +97,14 @@
     function AddScreen() {
         document.getElementById('touch_list_table_div').innerHTML = '';
         max_pantalla++;
-        fetch("/cgi-bin/abmtouch.cgi?funcion=add&Id=" + id + "&Pantalla=" + max_pantalla + "&Boton=1") // Consulta
+        fetch("/abm/abmtouch?funcion=add&Id=" + id + "&Pantalla=" + max_pantalla + "&Boton=1") // Consulta
         .finally( OnLoad() );
     }
 
     function DelScreen(Id, Pantalla) {
         if(Pantalla == max_pantalla) {
             document.getElementById('touch_list_table_div').innerHTML = '';
-            fetch("/cgi-bin/abmtouch.cgi?funcion=delete&Id=" + Id + "&Pantalla=" + Pantalla) // Consulta
+            fetch("/abm/abmtouch?funcion=delete&Id=" + Id + "&Pantalla=" + Pantalla) // Consulta
             .finally( OnLoad() );
         }
 	}

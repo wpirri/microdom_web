@@ -76,7 +76,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmgroup.cgi") // Consulta
+        fetch("/abm/abmgroup") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'group_list_table_div', 'Grupos', 'Id', 'group_edit.html', 'group_delete.html'))
         .catch(error => {

@@ -75,7 +75,7 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmat.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/abm/abmat?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'task_delete_div', 'Borrar Tarea'))
         .catch(error => {
@@ -87,7 +87,7 @@
     function SaveData() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmat.cgi?funcion=delete&Id=" + id) // Consulta
+        fetch("/abm/abmat?funcion=delete&Id=" + id) // Consulta
         .catch(function(){} )
         .finally(function(){ window.location.replace('task_list.html'); });
     }

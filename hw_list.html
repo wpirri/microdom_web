@@ -86,7 +86,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi") // Consulta
+        fetch("/abm/abmhw") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'hw_list_table_div', 'Dispositivos', 'Id', 'hw_edit.html', 'hw_delete.html'))
         .catch(error => {
@@ -96,15 +96,15 @@
     }
 
     function UpdateFirmware(id) {
-        fetch('/cgi-bin/abmhw.cgi?funcion=update_firmware&Id=' + id)
+        fetch('/abm/abmhw?funcion=update_firmware&Id=' + id)
     }
 
     function UpdateWiFi(id) {
-        fetch('/cgi-bin/abmhw.cgi?funcion=update_wifi&Id=' + id)
+        fetch('/abm/abmhw?funcion=update_wifi&Id=' + id)
     }
 
     function UpdateIOConfig(id) {
-        fetch('/cgi-bin/abmhw.cgi?funcion=update_ioconfig&Id=' + id)
+        fetch('/abm/abmhw?funcion=update_ioconfig&Id=' + id)
     }
 
 </script>

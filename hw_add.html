@@ -82,7 +82,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi?funcion=get&Id=0") // Consulta
+        fetch("/abm/abmhw?funcion=get&Id=0") // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'hw_add_div', 'Dispositivo Nuevo'))
         .catch(error => {
@@ -102,7 +102,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmhw.cgi?funcion=add", {
+        fetch("/abm/abmhw?funcion=add", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

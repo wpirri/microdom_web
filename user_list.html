@@ -76,7 +76,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmuser.cgi") // Consulta
+        fetch("/abm/abmuser") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'user_list_table_div', 'Usuarios', 'Id', 'user_edit.html', 'user_delete.html'))
         .catch(error => {

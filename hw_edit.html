@@ -84,7 +84,7 @@
     function OnLoad() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmhw.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/abm/abmhw?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'hw_edit_div', 'Editar Dispositivo'))
         .catch(error => {
@@ -104,7 +104,7 @@
             kvpairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
         }
 
-        fetch("/cgi-bin/abmhw.cgi?funcion=update", {
+        fetch("/abm/abmhw?funcion=update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: kvpairs.join('&')

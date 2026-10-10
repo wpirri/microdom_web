@@ -74,10 +74,10 @@
 				}
 				// Acción al hacer click
 				if (item.Tipo == 0) {
-					accion = "fetch('/cgi-bin/abmassign.cgi?funcion=switch&Objeto=" + item.Objeto + "');";
+					accion = "fetch('/abm/abmassign?funcion=switch&Objeto=" + item.Objeto + "');";
 				}
 				else if (item.Tipo == 5) {
-					accion = "fetch('/cgi-bin/abmassign.cgi?funcion=pulse&Objeto=" + item.Objeto + "&Segundos=" + item.Analog_Mult_Div_Valor + "');";
+					accion = "fetch('/abm/abmassign?funcion=pulse&Objeto=" + item.Objeto + "&Segundos=" + item.Analog_Mult_Div_Valor + "');";
 				}
 				// Armo el tag de imagen
 				img = "<img id=\"id-" + nombre + "\" class=\"home-image\" src=\"" + src + "\" onclick=\"" + accion + "\"/>\n";
@@ -88,7 +88,7 @@
 			document.getElementById("planta").innerHTML = objetos_planta;
 
 			// Me traigo el plano y las coordenadas de scroll
-			fetch('/cgi-bin/abmsys.cgi?funcion=get_current') // Consulta
+			fetch('/abm/abmsys?funcion=get_current') // Consulta
 				.then(response => response.json())
 				.then(data => loadHomePicture(data))
 				.catch(error => { document.getElementById("clima-exterior").innerHTML =
@@ -164,7 +164,7 @@
 	}
 
 	function refreshHomeStatus() {
-		fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
+		fetch('/abm/abmassign?funcion=status&Planta=' + PLANTA) // Consulta
 			.then(response => response.json())
 			.then(data => updateHomeStatus(data))
 			.catch(error => { });
@@ -172,12 +172,12 @@
 	}
 
 	function OnLoad( ) {
-		fetch('/cgi-bin/abmassign.cgi?funcion=info&Planta=' + PLANTA) // Consulta
+		fetch('/abm/abmassign?funcion=info&Planta=' + PLANTA) // Consulta
 			.then(response => response.json())
 			.then(data => insertarEstilos(data.response))
 			.catch(error => { console.error('Error al obtener los estilos:', error); });
 
-		fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
+		fetch('/abm/abmassign?funcion=status&Planta=' + PLANTA) // Consulta
 			.then(response => response.json())
 			.then(data => renderObjetos(data.response))
 			.catch(error => { console.error('Error al obtener los objetos:', error); });

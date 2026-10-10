@@ -86,7 +86,7 @@
 
     function OnLoad() {
 		max_boton = 0;
-        fetch("/cgi-bin/abmtouch.cgi?funcion=list&Id=" + id + "&Pantalla=" + pantalla) // Consulta
+        fetch("/abm/abmtouch?funcion=list&Id=" + id + "&Pantalla=" + pantalla) // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'touch_list_table_div', 'Tactiles - Botones', 'Boton', 'touch_edit_boton.html'))
         .catch(error => {
@@ -98,14 +98,14 @@
     function AddBoton() {
         document.getElementById('touch_list_table_div').innerHTML = '';
         max_boton++;
-        fetch("/cgi-bin/abmtouch.cgi?funcion=add&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + max_boton) // Consulta
+        fetch("/abm/abmtouch?funcion=add&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + max_boton) // Consulta
         .finally( OnLoad() );
     }
 
     function DelBoton(boton) {
         if(boton == max_boton) {
             document.getElementById('touch_list_table_div').innerHTML = '';
-            fetch("/cgi-bin/abmtouch.cgi?funcion=delete&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + boton) // Consulta
+            fetch("/abm/abmtouch?funcion=delete&Id=" + id + "&Pantalla=" + pantalla + "&Boton=" + boton) // Consulta
             .finally( OnLoad() );
         }
 	}

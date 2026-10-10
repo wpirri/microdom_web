@@ -83,7 +83,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmev.cgi") // Consulta
+        fetch("/abm/abmev") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'event_list_table_div', 'Eventos', 'Id', 'event_edit.html', 'event_delete.html'))
         .catch(error => {

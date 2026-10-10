@@ -45,7 +45,7 @@
             if(moveObj) {
                 moveObj = false;
                 if(pic_pos_x > 0 && pic_pos_y > 0) {
-                    fetch('/cgi-bin/abmassign.cgi?funcion=update', {
+                    fetch('/abm/abmassign?funcion=update', {
 						method: 'POST',
 						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 						body: 'Id=' + obj_id + '&Cord_x=' + pic_pos_x + '&Cord_y=' + pic_pos_y
@@ -138,7 +138,7 @@
 			document.getElementById("planta").innerHTML = objetos_planta;
 
 			// Me traigo el plano y las coordenadas de scroll
-			fetch('/cgi-bin/abmsys.cgi?funcion=get_current') // Consulta
+			fetch('/abm/abmsys?funcion=get_current') // Consulta
 				.then(response => response.json())
 				.then(data => loadHomePicture(data))
 				.catch(error => { document.getElementById("clima-exterior").innerHTML =
@@ -170,12 +170,12 @@
 	}
 
 	function OnLoad( ) {
-		fetch('/cgi-bin/abmassign.cgi?funcion=info&Planta=' + PLANTA) // Consulta
+		fetch('/abm/abmassign?funcion=info&Planta=' + PLANTA) // Consulta
 			.then(response => response.json())
 			.then(data => insertarEstilos(data.response))
 			.catch(error => { console.error('Error al obtener los estilos:', error); });
 
-		fetch('/cgi-bin/abmassign.cgi?funcion=status&Planta=' + PLANTA) // Consulta
+		fetch('/abm/abmassign?funcion=status&Planta=' + PLANTA) // Consulta
 			.then(response => response.json())
 			.then(data => renderObjetosEdit(data.response))
 			.catch(error => { console.error('Error al obtener los objetos:', error); });

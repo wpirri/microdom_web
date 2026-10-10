@@ -81,7 +81,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmauto.cgi?funcion=list&Tipo=4") // Consulta
+        fetch("/abm/abmauto?funcion=list&Tipo=4") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'analog_list_table_div', 'Iluminaci&oacute;n', 'Id', 'analog_edit.html', 'analog_delete.html'))
         .catch(error => {

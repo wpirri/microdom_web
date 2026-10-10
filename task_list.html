@@ -83,7 +83,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmat.cgi") // Consulta
+        fetch("/abm/abmat") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'task_list_table_div', 'Tareas', 'Id', 'task_edit.html', 'task_delete.html'))
         .catch(error => {

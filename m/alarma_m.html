@@ -119,19 +119,19 @@ function LoadData(msg) {
 }
 
 function OnLoad() {
-    newAJAXCommand('/cgi-bin/abmalarma.cgi?funcion=status_part&Part=<?php echo $Part; ?>', LoadData, true);
+    newAJAXCommand('/abm/abmalarma?funcion=status_part&Part=<?php echo $Part; ?>', LoadData, true);
 }
 
 function ChangeParticion(part) {
-    newAJAXCommand('/cgi-bin/abmalarma.cgi?funcion=switch_part&Part=' + part);
+    newAJAXCommand('/abm/abmalarma?funcion=switch_part&Part=' + part);
 }
 
 function ChangeZona(part, zona) {
-    newAJAXCommand('/cgi-bin/abmalarma.cgi?funcion=switch_zona&Part=' + part + '&Zona=' + zona);
+    newAJAXCommand('/abm/abmalarma?funcion=switch_zona&Part=' + part + '&Zona=' + zona);
 }
 
 function ChangeSalida(part, salida) {
-    newAJAXCommand('/cgi-bin/abmalarma.cgi?funcion=pulse_salida&Part=' + part + '&Salida=' + salida);
+    newAJAXCommand('/abm/abmalarma?funcion=pulse_salida&Part=' + part + '&Salida=' + salida);
 }
 
 </script>

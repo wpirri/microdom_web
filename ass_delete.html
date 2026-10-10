@@ -96,7 +96,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmhw.cgi?funcion=listall") // Consulta para armar listado de HW disponibles
+        fetch("/abm/abmhw?funcion=listall") // Consulta para armar listado de HW disponibles
         .then(response => response.json())
         .then(data => LoadHWList(data))
         .catch(error => {
@@ -105,7 +105,7 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmassign.cgi?funcion=get&Id=" + id) // Consulta
+        fetch("/abm/abmassign?funcion=get&Id=" + id) // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'ass_delete_div', 'Borrar Objeto'))
         .catch(error => {
@@ -117,7 +117,7 @@
     function SaveData() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('Id'); // recupera el valor de ?Id=123
-        fetch("/cgi-bin/abmassign.cgi?funcion=delete&Id=" + id) // Consulta
+        fetch("/abm/abmassign?funcion=delete&Id=" + id) // Consulta
         .catch(function(){} )
         .finally(function(){ window.location.replace('ass_list.html'); });
     }

@@ -25,7 +25,7 @@
 <div id='ass_list_table_div' class='abm-div'></div>
 
 <script type="text/javascript" >
-    // /cgi-bin/abmassign.cgi
+    // /abm/abmassign
 
     function ArmarLista(data, divId, title, idField, editPage, deletePage) {
         if(data.error != 0) {
@@ -78,7 +78,7 @@
     }
 
     function OnLoad() {
-        fetch("/cgi-bin/abmassign.cgi") // Consulta
+        fetch("/abm/abmassign") // Consulta
         .then(response => response.json())
         .then(data => ArmarLista(data, 'ass_list_table_div', 'Objetos', 'Id', 'ass_edit.html', 'ass_delete.html'))
         .catch(error => {
