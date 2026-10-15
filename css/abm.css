@@ -57,6 +57,17 @@
 	color: orange;	  
 	}
 
+.abm-sticky-header-table th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	}
+
+.abm-can-click-text {
+	color: blue;
+	cursor: pointer;
+}
+
 .abm-edit-input-text {
 	background: darkgrey;
 }

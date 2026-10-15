@@ -141,7 +141,6 @@ function RefreshListData() {
 	window.setTimeout("RefreshListData();", 1000); // Refrescar cada 1 segundo
 }
 
-
 function ChangeStatus(objeto) {
 	fetch('/abm/dompi_mobile?funcion=touch&Objeto=' + objeto);
 }

@@ -28,6 +28,24 @@
 <div id='hw_add_div' class='abm-div'></div>
 
 <script type="text/javascript" >
+    var ListaNewHw = [];
+
+    function ArmarListaNewHW(msg) {
+        try {
+            for (var i = 0; i < msg.response.length; i++) {
+                ListaNewHw[i] = { label: msg.response[i].MAC, value: msg.response[i].MAC };
+            }
+        } catch (error) {
+            ListaNewHw = ['000000000000'];
+        }
+    }
+
+    function ChangeInputMAC() {
+        document.getElementById('div_ingreso_mac').innerHTML = '<input type="text" id="MAC" name="MAC" class="abm-edit-input-text" />';
+        // set focus to the new input field
+        document.getElementById('MAC').focus();
+    }
+
     function ArmarTabla(data, dst_div, title) {
         var dst = document.getElementById(dst_div);
         if (!dst) return;
@@ -68,6 +86,12 @@
             output += '<td>';
             if (h === 'Id') {
                 output += '<input type="hidden" id="' + h + '" name="' + h + '" class="abm-edit-input-text" value="' + String(val).replace(/"/g, '&quot;') + '" />';
+            } else if (h === 'MAC') {
+                output += '<div id="div_ingreso_mac" >'
+                output += DropDownSelectValueLabel(h, ListaNewHw);
+                output += '&nbsp;&nbsp;&nbsp;';
+                output += '<a OnClick="ChangeInputMAC();" class="abm-can-click-text" >(Ingreso manual)</a>';
+                output += '</div>';
             } else if (h === 'Tipo') {
                 output += DropDownSelect(h, TipoHW, val, null);
             } else {
@@ -82,6 +106,11 @@
     }
 
     function OnLoad() {
+        fetch("/abm/abmhw?funcion=invalid_hw_list") // Consulta
+        .then(response => response.json())
+        .then(data => ArmarListaNewHW(data))
+        .catch(error => { ListaNewHw = ['000000000000']; });
+
         fetch("/abm/abmhw?funcion=get&Id=0") // Consulta
         .then(response => response.json())
         .then(data => ArmarTabla(data, 'hw_add_div', 'Dispositivo Nuevo'))
