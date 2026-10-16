@@ -120,7 +120,7 @@ function UpdateList(msg) {
 }
 
 function OnLoad() {
-	fetch('/abm/dompi_mobile?funcion=list&Grupo=' + grupo) // Consulta
+	fetch('/abm/mobile?funcion=list&Grupo=' + grupo) // Consulta
 	.then(response => response.json())
 	.then(data => CreateList(data.response))
 	.catch(error => {
@@ -130,7 +130,7 @@ function OnLoad() {
 }
 
 function RefreshListData() {
-	fetch('/abm/dompi_mobile?funcion=list&Grupo=' + grupo) // Consulta
+	fetch('/abm/mobile?funcion=list&Grupo=' + grupo) // Consulta
 	.then(response => response.json())
 	.then(data => UpdateList(data.response))
 	.catch(error => {
@@ -142,7 +142,7 @@ function RefreshListData() {
 }
 
 function ChangeStatus(objeto) {
-	fetch('/abm/dompi_mobile?funcion=touch&Objeto=' + objeto);
+	fetch('/abm/mobile?funcion=touch&Objeto=' + objeto);
 }
 </script>
 

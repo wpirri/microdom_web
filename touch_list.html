@@ -70,8 +70,8 @@
                         html += "<td>" + (item[field] ?? "") + "</td>";
                     }
                 });
-                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
-                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateConfig(" + item[idField] + ")\"></td>";
+                html += "<td><img src='images/edit.png' class='touch-icon-btn' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/ok.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateConfig(" + item[idField] + ")\"></td>";
                 html += "</tr>";
             }
         });

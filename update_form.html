@@ -12,7 +12,7 @@
 <script src="js/microdom.js" type="text/javascript"></script>
 </head>
 
-<body onload="OnLoad();">
+<body>
 
 <form enctype="multipart/form-data" action="update_form.html" method="post" id="update_form" name="update_form" method="post">
 
@@ -20,40 +20,93 @@
 	<img id='update_back_icon' class='icon-btn' src='images/no.png'>&nbsp;Volver
 </div>
 
-<div id='update_si_no'>
-    <div id='update_save_btn' class='submit-btn' onclick="Upload();" >
-        <img id='update_save_icon' class='icon-btn' src='images/ok.png'>&nbsp;Actualizar
-    </div>
-</div>
-
 <div id='update_div' class='abm-div'>
     <p class=abm-table-title>&nbsp;Actualizar</p>
     <div id='update_result_div' class='abm-result-message'>&nbsp;</div>
+    <table class='abm-table' >
+    <tr>
+        <td>&nbsp;</td>
+        <td >Actualizar servicios</td>
+        <td>&nbsp;</td>
+        <td ><div id='update_service_result'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick='UpdateService()'></div></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td >Actualizar firmware</td>
+        <td>&nbsp;</td>
+        <td ><div id='update_firmware_result'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick='UpdateFirmware()'></div></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td >Actualizar web</td>
+        <td>&nbsp;</td>
+        <td ><div id='update_web_result'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick='UpdateWeb()'></div></td>
+    </tr>
+    </table>
 </div>
 
 <script type="text/javascript" >
 
-    function OnLoad() {
-
+    function UpdateService() {
+        fetch("/abm/update?funcion=servicio") // Consulta
+        .then(response => response.json())
+        .then(data => { ResponseUpdateService(data, null) })
+        .catch(error => { ResponseUpdateService(null, error) });
     }
 
-    function Upload() {
-        var form = document.getElementById("update_form");
-        var formData = new FormData(form);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "update_form.html", true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    document.getElementById("update_result_div").innerHTML = xhr.responseText;
-                } else {
-                    document.getElementById("update_result_div").innerHTML = "Error al actualizar: " + xhr.statusText;
-                }
+    function ResponseUpdateService(data, error) {
+        if (data) {
+            if (data.error != 0) {
+                document.getElementById("update_service_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+            } else {
+                document.getElementById("update_service_result").innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>";
             }
-        };
-        xhr.send(formData);
+        } else {
+            document.getElementById("update_service_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+        }
     }
+
+    function UpdateFirmware() {
+        fetch("/abm/update?funcion=firmware") // Consulta
+        .then(response => response.json())
+        .then(data => { ResponseUpdateFirmware(data, null) })
+        .catch(error => { ResponseUpdateFirmware(null, error) });
+    }
+
+    function ResponseUpdateFirmware(data, error) {
+        if (data) {
+            if (data.error != 0) {
+                document.getElementById("update_firmware_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+            } else {
+                document.getElementById("update_firmware_result").innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>";
+            }
+        } else {
+            document.getElementById("update_firmware_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+        }
+    }
+
+    function UpdateWeb() {
+        fetch("/abm/update?funcion=web") // Consulta
+        .then(response => response.json())
+        .then(data => { ResponseUpdateWeb(data, null) })
+        .catch(error => { ResponseUpdateWeb(null, error) });
+    }
+
+    function ResponseUpdateWeb(data, error) {
+        if (data) {
+            if (data.error != 0) {
+                document.getElementById("update_web_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+            } else {
+                document.getElementById("update_web_result").innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>";
+            }
+        } else {
+            document.getElementById("update_web_result").innerHTML = "<img src='images/no.png' class='touch-icon-btn'>";
+        }
+    }
+
+
+
+
 </script>
 
 </form>

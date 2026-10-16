@@ -67,8 +67,8 @@
                 fields.forEach(field => {
                     html += "<td>" + (item[field] ?? "") + "</td>";
                 });
-                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
-                html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/edit.png' class='touch-icon-btn' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/delete.png' class='touch-icon-btn' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
                 html += "</tr>";
             }
         });

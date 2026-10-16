@@ -72,11 +72,18 @@
                         html += "<td>" + (item[field] ?? "") + "</td>";
                     }
                 });
-                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
-                html += "<td><img src='images/delete.png' class='abm-list-icon' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
-                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateFirmware(" + item[idField] + ")\"></td>";
-                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateWiFi(" + item[idField] + ")\"></td>";
-                html += "<td><img src='images/ok.png' class='abm-list-icon' title='Actualizar' onclick=\"UpdateIOConfig(" + item[idField] + ")\"></td>";
+                html += "<td><img src='images/edit.png' class='touch-icon-btn' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
+                html += "<td><img src='images/delete.png' class='touch-icon-btn' title='Eliminar' onclick=\"window.location.replace('" + deletePage + "?Id=" + item[idField] + "');\"></td>";
+                if(item["Estado"] == 0) {
+                    html += "<td>&nbsp;</td>";
+                    html += "<td>&nbsp;</td>";
+                    html += "<td>&nbsp;</td>";
+
+                } else {
+                    html += "<td><div id='firmware-update-" + item[idField] + "'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateFirmware(" + item[idField] + ")\"></div></td>";
+                    html += "<td><div id='wifi-update-" + item[idField] + "'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateWiFi(" + item[idField] + ")\"></div></td>";
+                    html += "<td><div id='ioconfig-update-" + item[idField] + "'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateIOConfig(" + item[idField] + ")\"></div></td>";
+                }
                 html += "</tr>";
             }
         });
@@ -97,14 +104,25 @@
 
     function UpdateFirmware(id) {
         fetch('/abm/abmhw?funcion=update_firmware&Id=' + id)
+        .then(response => response.json())
+        .then(data => { document.getElementById("firmware-update-" + id).innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>"; } )
+        .catch(error => { document.getElementById("firmware-update-" + id).innerHTML = "<img src='images/no.png' class='touch-icon-btn'>"; } );
+
     }
 
     function UpdateWiFi(id) {
         fetch('/abm/abmhw?funcion=update_wifi&Id=' + id)
+        .then(response => response.json())
+        .then(data => { document.getElementById("wifi-update-" + id).innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>"; } )
+        .catch(error => { document.getElementById("wifi-update-" + id).innerHTML = "<img src='images/no.png' class='touch-icon-btn'>"; } );
+
     }
 
     function UpdateIOConfig(id) {
         fetch('/abm/abmhw?funcion=update_ioconfig&Id=' + id)
+        .then(response => response.json())
+        .then(data => { document.getElementById("ioconfig-update-" + id).innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>"; } )
+        .catch(error => { document.getElementById("ioconfig-update-" + id).innerHTML = "<img src='images/no.png' class='touch-icon-btn'>"; } );
     }
 
 </script>

@@ -63,7 +63,7 @@
                 fields.forEach(field => {
                     html += "<td>" + (item[field] ?? "") + "</td>";
                 });
-                html += "<td><img src='images/edit.png' class='abm-list-icon' title='Agregar' onclick=\"" + addFcn + "(" + item[idField] + ");\"></td>";
+                html += "<td><img src='images/edit.png' class='touch-icon-btn' title='Agregar' onclick=\"" + addFcn + "(" + item[idField] + ");\"></td>";
                 html += "</tr>";
             }
         });

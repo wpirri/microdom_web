@@ -23,15 +23,16 @@ body {
 
 .icon-btn {
 	border: 0px;
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
 	}
 
-.touch-icon {
+.touch-icon-btn {
 	border: 0px;
+	width: 24px;
+	height: 24px;
 	cursor: pointer;
 	}
-	
 
 .back-btn {
 	z-index: 10;
