@@ -36,25 +36,25 @@ TipoAss[5] = 'Salida Pulso';
 TipoAss[6] = 'Periferico';
 
 var PortAss = [];
-PortAss[0] =  { value: 'IO1',  		label: 'IO1' }
-PortAss[1] =  { value: 'IO2',  		label: 'IO2' }
-PortAss[2] =  { value: 'IO3',  		label: 'IO3' }
-PortAss[3] =  { value: 'IO4',  		label: 'IO4' }
-PortAss[4] =  { value: 'IO5',  		label: 'IO5' }
-PortAss[5] =  { value: 'IO6',  		label: 'IO6' }
-PortAss[6] =  { value: 'IO7',  		label: 'IO7' }
-PortAss[7] =  { value: 'IO8',  		label: 'IO8' }
-PortAss[8] =  { value: 'OUT1', 		label: 'OUT1' }
-PortAss[9] =  { value: 'OUT2', 		label: 'OUT2' }
-PortAss[10] = { value: 'OUT3', 		label: 'OUT3' }
-PortAss[11] = { value: 'OUT4', 		label: 'OUT4' }
-PortAss[12] = { value: 'OUT5', 		label: 'OUT5' }
-PortAss[13] = { value: 'OUT6', 		label: 'OUT6' }
-PortAss[14] = { value: 'OUT7', 		label: 'OUT7' }
-PortAss[15] = { value: 'OUT8', 		label: 'OUT8' }
-PortAss[16] = { value: 'TEMP', 		label: 'Sensor Temperatura' }
-PortAss[17] = { value: 'HUM', 		label: 'Sensor Humedad' }
-PortAss[18] = { value: 'CARD', 		label: 'Lector Tarjetas' }
+PortAss[0] = { value: 'IO1', label: 'IO1' }
+PortAss[1] = { value: 'IO2', label: 'IO2' }
+PortAss[2] = { value: 'IO3', label: 'IO3' }
+PortAss[3] = { value: 'IO4', label: 'IO4' }
+PortAss[4] = { value: 'IO5', label: 'IO5' }
+PortAss[5] = { value: 'IO6', label: 'IO6' }
+PortAss[6] = { value: 'IO7', label: 'IO7' }
+PortAss[7] = { value: 'IO8', label: 'IO8' }
+PortAss[8] = { value: 'OUT1', label: 'OUT1' }
+PortAss[9] = { value: 'OUT2', label: 'OUT2' }
+PortAss[10] = { value: 'OUT3', label: 'OUT3' }
+PortAss[11] = { value: 'OUT4', label: 'OUT4' }
+PortAss[12] = { value: 'OUT5', label: 'OUT5' }
+PortAss[13] = { value: 'OUT6', label: 'OUT6' }
+PortAss[14] = { value: 'OUT7', label: 'OUT7' }
+PortAss[15] = { value: 'OUT8', label: 'OUT8' }
+PortAss[16] = { value: 'TEMP', label: 'Sensor Temperatura' }
+PortAss[17] = { value: 'HUM', label: 'Sensor Humedad' }
+PortAss[18] = { value: 'CARD', label: 'Lector Tarjetas' }
 
 var GrupoVisual = [];
 GrupoVisual[0] = 'Ninguno';
@@ -274,40 +274,40 @@ ListaEventoTouch[5] = '';
 ListaEventoTouch[6] = '';
 ListaEventoTouch[7] = '';
 ListaEventoTouch[8] = '';
-ListaEventoTouch[9] = '';
+ListaEventoTouch[9] = 'Debug';
 ListaEventoTouch[10] = 'Config';
 ListaEventoTouch[11] = 'Home';
 ListaEventoTouch[12] = 'Prev';
 ListaEventoTouch[13] = 'Next'
 
 var Color = [];
-Color[0] =  { value: 0,     label: 'BLACK'}
-Color[1] =  { value: 31,    label: 'BLUE'}
-Color[2] =  { value: 63488, label: 'RED'}
-Color[3] =  { value: 2016,  label: 'GREEN'}
-Color[4] =  { value: 2047,  label: 'CYAN'}
-Color[5] =  { value: 63519, label: 'MAGENTA'}
-Color[6] =  { value: 65504, label: 'YELLOW'}
-Color[7] =  { value: 65535, label: 'WHITE'}
-Color[8] =  { value: 15,    label: 'NAVY'}
-Color[9] =  { value: 992,   label: 'DARKGREEN'}
-Color[10] = { value: 1007,  label: 'DARKCYAN'}
-Color[11] = { value: 30720, label: 'MAROON'}
-Color[12] = { value: 30735, label: 'PURPLE'}
-Color[13] = { value: 31712, label: 'OLIVE'}
-Color[14] = { value: 49688, label: 'LIGHTGREY'}
-Color[15] = { value: 31727, label: 'DARKGREY'}
-Color[16] = { value: 64800, label: 'ORANGE'}
-Color[17] = { value: 45029, label: 'GREENYELLOW'}
-Color[18] = { value: 63519, label: 'PINK'}
+Color[0] = { value: 0, label: 'BLACK' }
+Color[1] = { value: 31, label: 'BLUE' }
+Color[2] = { value: 63488, label: 'RED' }
+Color[3] = { value: 2016, label: 'GREEN' }
+Color[4] = { value: 2047, label: 'CYAN' }
+Color[5] = { value: 63519, label: 'MAGENTA' }
+Color[6] = { value: 65504, label: 'YELLOW' }
+Color[7] = { value: 65535, label: 'WHITE' }
+Color[8] = { value: 15, label: 'NAVY' }
+Color[9] = { value: 992, label: 'DARKGREEN' }
+Color[10] = { value: 1007, label: 'DARKCYAN' }
+Color[11] = { value: 30720, label: 'MAROON' }
+Color[12] = { value: 30735, label: 'PURPLE' }
+Color[13] = { value: 31712, label: 'OLIVE' }
+Color[14] = { value: 49688, label: 'LIGHTGREY' }
+Color[15] = { value: 31727, label: 'DARKGREY' }
+Color[16] = { value: 64800, label: 'ORANGE' }
+Color[17] = { value: 45029, label: 'GREENYELLOW' }
+Color[18] = { value: 63519, label: 'PINK' }
 
 function GetLabelFromValue(listvl, value) {
-    for (var i = 0; i < listvl.length; i++) {
-        if (listvl[i].value == value) {
-            return listvl[i].label;
-        }
-    }
-    return '';
+	for (var i = 0; i < listvl.length; i++) {
+		if (listvl[i].value == value) {
+			return listvl[i].label;
+		}
+	}
+	return '';
 }
 
 /* Arma un Drop down listbox */
@@ -317,14 +317,14 @@ function DropDownSelect(name, list, selected, onchange) {
 		selected = (-1);
 	}
 
-	if(onchange == null) {
+	if (onchange == null) {
 		out += '<select name="' + name + '" id="' + name + '" class="abm-select">\n';
 	} else {
 		out += '<select name="' + name + '" id="' + name + '" class="abm-select" onchange="' + onchange + '">\n';
 	}
 
 	for (var i = 0; i < list.length; i++) {
-		if(i == selected) {
+		if (i == selected) {
 			out += '<option selected value="' + i + '">' + list[i] + '</option>\n';
 		} else {
 			out += '<option value="' + i + '">' + list[i] + '</option>\n';
@@ -340,14 +340,14 @@ function DropDownSelectValueLabel(name, listvl, selected, onchange) {
 		selected = (-1);
 	}
 
-	if(onchange == null) {
+	if (onchange == null) {
 		out += '<select name="' + name + '" id="' + name + '" class="abm-select">\n';
 	} else {
 		out += '<select name="' + name + '" id="' + name + '" class="abm-select" onchange="' + onchange + '">\n';
 	}
 
 	for (var i = 0; i < listvl.length; i++) {
-		if(listvl[i].value == selected) {
+		if (listvl[i].value == selected) {
 			out += '<option selected value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
 		} else {
 			out += '<option value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
@@ -365,8 +365,8 @@ function ListMultiSelect(name, size, list, selected) {
 	var out = '<select name="' + name + '" id="' + name + '" size="' + size + '" class="abm-multi-select" multiple>\n';
 
 	for (var i = 1; i < list.length; i++) {
-		if(i > 0) {
-			if( selected != null && selected.includes(i, 0) ) {
+		if (i > 0) {
+			if (selected != null && selected.includes(i, 0)) {
 				out += '<option selected value="' + i + '">' + list[i] + '</option>\n';
 			} else {
 				out += '<option value="' + i + '">' + list[i] + '</option>\n';
@@ -384,11 +384,11 @@ function ListMultiSelectValueLabel(name, size, listvl, selected) {
 	var out = '<select name="' + name + '" id="' + name + '" size="' + size + '" class="abm-multi-select" multiple>\n';
 
 	for (var i = 1; i < listvl.length; i++) {
-        if( selected != null && selected.includes(listvl[i].value, 0) ) {
-            out += '<option selected value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
-        } else {
-            out += '<option value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
-        }
+		if (selected != null && selected.includes(listvl[i].value, 0)) {
+			out += '<option selected value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+		} else {
+			out += '<option value="' + listvl[i].value + '">' + listvl[i].label + '</option>\n';
+		}
 	}
 	out += '</select>\n';
 	return out;

@@ -72,7 +72,12 @@
                         }
                     });
                     html += "<td><img src='images/edit.png' class='touch-icon-btn' title='Editar' onclick=\"window.location.replace('" + editPage + "?Id=" + item[idField] + "');\"></td>";
-                    html += "<td><img src='images/ok.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateConfig(" + item[idField] + ")\"></td>";
+                    if (item["Estado"] == 0) {
+                        html += "<td>&nbsp;</td>";
+
+                    } else {
+                        html += "<td><div id='config-update-" + item[idField] + "'><img src='images/update3.png' class='touch-icon-btn' title='Actualizar' onclick=\"UpdateConfig(" + item[idField] + ")\"></div></td>";
+                    }
                     html += "</tr>";
                 }
             });
@@ -93,6 +98,9 @@
 
         function UpdateConfig(id) {
             fetch('/abm/abmhw?funcion=update_ioconfig&Id=' + id)
+                .then(response => response.json())
+                .then(data => { document.getElementById("config-update-" + id).innerHTML = "<img src='images/ok.png' class='touch-icon-btn'>"; })
+                .catch(error => { document.getElementById("config-update-" + id).innerHTML = "<img src='images/no.png' class='touch-icon-btn'>"; });
         }
     </script>
 
