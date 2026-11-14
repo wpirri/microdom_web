@@ -69,7 +69,6 @@
 				SelectCamera(json_list[1]['Nombre'], json_list[1]['Direccion_IP'], json_list[1]['Usuario'], json_list[1]['Clave'], json_list[1]['Protocolo'], json_list[1]['Requerimiento']);
 			}
 
-			setTimeout(getCameraImage, 1000);
 		}
 
 		function SelectCamera(nombre, ip, usuario, clave, proto, req) {
@@ -79,9 +78,7 @@
 			cam_proto = proto;
 			cam_req = req;
 
-			if (cam_proto == 'iframe') {
-				document.getElementById('nvr_image').src = cam_ip;
-			}
+			setTimeout(getCameraImage, 1000);
 		}
 
 		function getCameraImage() {
@@ -97,11 +94,19 @@
 						//newAJAXCommand('get_camera_rtsp.php?src=' + cam_proto + '://' + cam_auth + '@' + cam_ip + cam_req, refreshImage, false);
 						//setTimeout(getCameraImage, 1000);
 					}
+					else if (cam_proto == 'iframe') {
+						document.getElementById('camera_image').innerHTML = '';
+						document.getElementById('nvr_image').src = cam_ip;
+					}
 				}
-			} catch (e) { }
+			} catch (e) {
+				document.getElementById('camera_image').innerHTML = '<p>Error al obtener la imagen</p>';
+				document.getElementById('nvr_image').src = '';
+			}
 		}
 
 		function refreshImage(img_base64) {
+			document.getElementById('nvr_image').src = '';
 			document.getElementById('camera_image').innerHTML = '<img width=540 src="data:image/png;base64, ' + img_base64 + '" />';
 		}
 
